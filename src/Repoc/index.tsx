@@ -7,6 +7,7 @@ import { Navigate } from "react-router";
 // import store from "./store";
 import GithubNavigation from './Navigation'
 import { Provider } from "react-redux"
+import Users from "./Users";
 // import Users from "./Users"
 
 function Repoc() {
@@ -50,10 +51,11 @@ function Repoc() {
       {/* </div> */}
       <div style={{ flexGrow: 1 }}>
         <GithubNavigation />
+        <hr />
         <Routes>
           <Route path="/" element={<Navigate to="Dashboard" />} />
           <Route path="/Dashboard" element={<Dashboard />} />
-          <Route path="/Users/*" element="Users" />
+          <Route path="/Users/*" element={<Users />} />
           {/* <Route path="/Courses/:cid/*" element={<Courses courses={_courses} />} /> */}
         </Routes>
       </div>

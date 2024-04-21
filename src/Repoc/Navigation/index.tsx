@@ -1,12 +1,14 @@
-import { Link, useLocation } from "react-router-dom";
-import "./index.css";
+import { Link, Route, Routes, useLocation } from "react-router-dom";
 import {
   FaTachometerAlt,
   FaRegUserCircle,
-  FaBook,
-  FaRegCalendarAlt,
+  FaGit,
+  FaGithub,
 } from "react-icons/fa";
-import { FaN, FaRegCircleQuestion, FaRegClock, FaRegEnvelopeOpen, FaYoutube } from "react-icons/fa6";
+import { FaN } from "react-icons/fa6";
+import Signin from "../Users/signin";
+import Signup from "../Users/singup";
+import { NONAME } from "dns";
 
 function GithubNavigation() {
   const links = [
@@ -15,21 +17,25 @@ function GithubNavigation() {
   ];
   const { pathname } = useLocation();
   return (
-    <ul className="wd-github-navigation">
-      <li style={{padding:"12px"}}>
-        <Link to="/Kanbas">  <FaN className="fs-2 f-2" color="red" size="60px" /></Link>
-      </li>
-      {links.map((link, index) => (
-        <li
-          key={index}
-          className={pathname.includes(link.label) ? "wd-active" : ""}
-        >
-          <Link to={link.label.includes('Courses') ? `/Kanbas/Courses/RS101/Home` :`/Kanbas/${link.label}` }>
-            <i>{link.icon}</i> {link.label}
-          </Link>
-        </li>
-      ))}
-    </ul>
+    <div className="d-flex justify-content-between p-2">
+      <div>
+        <Link to="/Dashboard" style={{"textDecoration":"none"}}>
+          <div className="d-flex">
+            <div>
+              <FaGithub className="fs-2 f-2" color="black" />
+            </div>
+            <div>
+              <h4 style={{"color":"black"}}>RepoC</h4>
+            </div>
+          </div>
+        </Link>
+      </div>
+      <div>
+        {links.map((link, index) => (
+          <Link className="btn btn-black" to={`/Users/${link.label}`}> <i>{link.label}</i> </Link>
+        ))}
+      </div>
+    </div>
   );
 }
 export default GithubNavigation;
