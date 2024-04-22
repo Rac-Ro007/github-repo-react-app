@@ -1,18 +1,17 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Collapse from 'react-bootstrap/Collapse';
 import Modal from 'react-bootstrap/Modal';
-// import * as client from "../Courses/client";
-// import {courses} from "../Database";
-// import db from "../Database";
 import axios from 'axios';
 import * as db from "../../db";
-// import * as user from '../../userProfile.json'
-// import localRepos from '../../githubRepos.json'
 import RepoCards from "./repoCards";
+// import * as db from "../Database";
+import * as user from '../../userProfile.json'
+import localRepos from '../../githubRepos.json'
+import App from "../../App";
 
 function Dashboard() {
-    // Modal config
+  // Modal config
   const [show, setShow] = useState(false);
   const [githubState, setGithubState] = useState({
     hasUser: false,
@@ -38,14 +37,14 @@ function Dashboard() {
   const [repos, setRepos] = useState([] as any);
   const [repo, setRepo] = useState({} as any);
 
-  // const fetchAllCourses = async () => {
-  //   const courses = await client.fetchAllCourses();
-  //   setCourses(courses);
-  // };
+  //   const fetchAllCourses = async () => {
+  //     const courses = await client.fetchAllCourses();
+  //     setCourses(courses);
+  //   };
 
   const clearCourse = () => setRepo([]);
 
-  const fetchGithubRepos = async (user:any) => {
+  const fetchGithubRepos = async (user: any) => {
     try {
     const profileResponse = await axios.get(`https://api.github.com/users/${user}?client_id=${process.env.GITHUB_CLIENT_ID}&client_secret=${process.env.GITHUB_CLIENT_SECRET}`);
     const reposResponse = await axios.get(`https://api.github.com/users/${user}/repos?per_page=5&sort=created:asc&client_id=${process.env.GITHUB_CLIENT_ID}&client_secret=${process.env.GITHUB_CLIENT_SECRET}`);
@@ -61,33 +60,10 @@ function Dashboard() {
     });
 
     }
-    catch(e: any) {
+    catch (e: any) {
       console.log(e);
     }
-    // setRepos(curRepos)
   }
-
-//   const createCourse = async () => {
-//     // const newCourses = await client.createCourse(course);
-//     // fetchAllCourses();
-//     setCourses(newCourses);
-//     clearCourse();
-//     setShow(false);
-//   };
-
-//   const updateCourse = async (id: string) => {
-//     const courses = await client.updateCourse(id, course);
-//     // fetchAllCourses();
-//     setCourses(courses);
-//     clearCourse();
-//     setShow(false);
-//   };
-
-//   const deleteCourse = async (id: string) => {
-//     const courses = await client.deleteCourse(id);
-//     setCourses(courses);
-//     // fetchAllCourses();
-//   };
 
   const fetchRepos = async () => {
     console.log(db.userRepos);
@@ -101,23 +77,6 @@ function Dashboard() {
     fetchRepos();
     console.log("State", githubState)
   }, []);
-  
-//   // const handleCreate = () => {
-//   //   addNewCourse();
-//   //   clearCourse();
-//   //   setShow(false);
-//   // };
-
-//   // const handleUpdate = () => {
-//   //   updateCourse();
-//   //   clearCourse();
-//   //   setShow(false);
-//   // };
-
-//   const handleDelete = () => {
-//     deleteCourse(course._id);
-//     setDeleteModal(false);
-//   }
 
   const [deleteModal, setDeleteModal] = useState(false);
   return (
@@ -175,6 +134,26 @@ function Dashboard() {
         Fetch User Data
       </button>
       
+      <div style={{"width":"500px", "justifyContent":"center"}}>
+        <input
+          className="form-control google-search"
+          value={githubUserName}
+          onChange={(e) => setGithubUserName(e.target.value)}
+          placeholder="Enter your Github UserName"
+        />
+      </div>
+      <br />
+      <div>
+        <button className="btn btn-outline-success w-100 m-2" onClick={() => {
+          // console.log(githubUserName);
+          setGithubUser(user);
+          // fetchRepos();
+          // console.log(repos);
+          fetchGithubRepos(githubUserName)
+        }}>
+          Fetch User Data
+        </button>
+      </div>
       <div className="card">
         <div className="row card-body">
             <div className="col-md-3">
@@ -244,37 +223,9 @@ function Dashboard() {
                 </div>
               </div>
             </div>
-          ))}
+          })}
         </div>
-      </div> */}
-      {/* Delete Modal */}
-      {deleteModal && (
-          <Modal 
-          show={deleteModal}
-          backdrop="static"
-          onHide={()=> {setDeleteModal(false);}}
-          aria-labelledby="contained-modal-title-vcenter"
-          centered>
-          <Modal.Header closeButton>
-            <Modal.Title>Delete Module?</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <div className="container align-items-center">
-              <h5>Are you sure you want to delete the Module?</h5>
-              <h5 style={{color:"red"}}>{repo.id} | {repo.name}</h5>
-              <hr/>
-              <div className="d-flex justify-content-around m-2">
-                <button className="btn btn-secondary m-2 w-100" onClick={() => setDeleteModal(false)}>
-                  Cancel
-                </button>
-                <button className="btn btn-outline-danger m-2 w-100">
-                  Delete 
-                </button>
-              </div>
-            </div>
-          </Modal.Body>
-        </Modal>
-      )}
+        </div> */}
     </div>
   );
 }

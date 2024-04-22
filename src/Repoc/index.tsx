@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Dashboard from "./Dashboard";
+import './index.css';
 import { Routes, Route } from "react-router-dom";
 import { Navigate } from "react-router";
 import * as client from './Dashboard/client'
@@ -10,6 +10,12 @@ import { Provider } from "react-redux"
 import RepoCards from "./Dashboard/repoCards";
 import Search from "./Search"
 import * as db from "../db";
+import Users from "./Users";
+import App from "../App";
+import Dashboard from "./Dashboard"
+import Footer from "./Footer";
+import Home from "./Home";
+import AboutUs from "./AboutUs";
 // import Users from "./Users"
 
 function Repoc() {
@@ -48,7 +54,7 @@ function Repoc() {
 
   return (
     // <Provider store={store}>
-    <div className="container">
+    <div>
       {/* <div className="d-none d-md-block"> */}
       {/* </div> */}
       <div style={{ flexGrow: 1 }}>
@@ -61,6 +67,23 @@ function Repoc() {
           <Route path="/Users/*" element="Users" />
           {/* <Route path="/Courses/:cid/*" element={<Courses courses={_courses} />} /> */}
         </Routes>
+        <div className="navbar" style={{"position":"fixed"}}>
+          <GithubNavigation />
+          <hr style={{"margin":"0", "color":"#2EA44F", "height":"2px"}}/>
+        </div>
+        
+        <div style={{"justifyContent":"center", "display":"flex"}}>
+          <Routes>
+            <Route path="/" element={<Navigate to="Home" />} />
+            <Route path="/Users/*" element={<Users />} />
+            <Route path="/Home" element={<Home />} />
+            <Route path="/AboutUs" element={<AboutUs />} />
+            {/* <Route path="/Courses/:cid/*" element={<Courses courses={_courses} />} /> */}
+          </Routes>
+        </div>
+        <div>
+          <Footer />
+        </div>
       </div>
     </div>
     // </Provider>

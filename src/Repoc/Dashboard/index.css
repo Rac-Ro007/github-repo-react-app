@@ -1,0 +1,144 @@
+.p-4 {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background-color: #222;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(166, 27, 27, 0.1);
+}
+
+.form-control {
+    width: calc(100% - 100px);
+    margin-bottom: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.btn {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: #2ea44f;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #228b45;
+}
+
+.card {
+    margin-top: 20px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: none;
+    border-radius: 10px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.card a.btn-primary {
+    width: 100%;
+}
+
+.badge {
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.list-group-item {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: none;
+}
+
+.list-group-item:first-child {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.list-group-item:last-child {
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.list-group {
+    margin-top: 20px;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: none;
+    border-radius: 10px;
+}
+
+.modal-content {
+    background-color: #222;
+    color: #fff;
+}
+
+.modal-header {
+    border-bottom: none;
+}
+
+.modal-title {
+    color: #fff;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.modal-footer {
+    border-top: none;
+}
+
+.modal-footer .btn-secondary {
+    background-color: #555;
+    color: #fff;
+}
+
+.modal-footer .btn-secondary:hover {
+    background-color: #444;
+}
+
+.modal-footer .btn-outline-danger {
+    color: #dc3545;
+    border-color: #dc3545;
+}
+
+.modal-footer .btn-outline-danger:hover {
+    color: #fff;
+    background-color: #dc3545;
+}
+
+.google-search {
+    border-radius: 20px;
+    /* Adjust as needed */
+    padding: 10px 20px;
+    /* Adjust padding to match Google search bar */
+    border: 1px solid #ccc;
+    /* Add a border for better visibility */
+    background-color: #fff;
+    /* Background color */
+    box-shadow: 0 2px 5px rgba(203, 69, 69, 0.1);
+    /* Add a slight shadow for depth */
+}
+
+.google-search:focus {
+    outline: none;
+    /* Remove default focus outline */
+    border-color: #2EA44F;
+    /* Change border color on focus */
+}
