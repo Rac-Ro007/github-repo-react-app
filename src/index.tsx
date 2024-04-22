@@ -5,12 +5,17 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+const fontStyle = "font-family: 'Comic Sans MS', 'Comic Sans', cursive;"
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
+    <div style={{fontStyle}}>
     <App />
+    </div>
+    {/* <App/> */}
   </React.StrictMode>
 );
 

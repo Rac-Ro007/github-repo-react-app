@@ -5,36 +5,61 @@ import Modal from 'react-bootstrap/Modal';
 // import * as client from "../Courses/client";
 // import {courses} from "../Database";
 // import db from "../Database";
-// import * as db from "../Database";
-import * as user from '../../userProfile.json'
-import localRepos from '../../githubRepos.json'
+import axios from 'axios';
+import * as db from "../../db";
+// import * as user from '../../userProfile.json'
+// import localRepos from '../../githubRepos.json'
+import RepoCards from "./repoCards";
 
 function Dashboard() {
     // Modal config
   const [show, setShow] = useState(false);
+  const [githubState, setGithubState] = useState({
+    hasUser: false,
+    loading: false,
+    user: {
+      id: undefined,
+      avatar: undefined,
+      login: undefined,
+      name: undefined,
+      html_url: undefined,
+      blog: undefined,
+      company: undefined,
+      location: undefined,
+      followers: 0,
+      following: 0,
+      public_gists: 0,
+      public_repos: 0,
+    },
+    repositories: [] as any,
+  })
   const [githubUserName, setGithubUserName] = useState("");
   const [githubUser, setGithubUser] = useState({} as any);
   const [repos, setRepos] = useState([] as any);
   const [repo, setRepo] = useState({} as any);
 
-//   const fetchAllCourses = async () => {
-//     const courses = await client.fetchAllCourses();
-//     setCourses(courses);
-//   };
+  // const fetchAllCourses = async () => {
+  //   const courses = await client.fetchAllCourses();
+  //   setCourses(courses);
+  // };
 
   const clearCourse = () => setRepo([]);
 
   const fetchGithubRepos = async (user:any) => {
     try {
-    const profileResponse = await fetch(`https://api.github.com/users/${user}?client_id=${process.env.GITHUB_CLIENT_ID}&client_secret=${process.env.GITHUB_CLIENT_SECRET}`);
-    const reposResponse = await fetch(`https://api.github.com/users/${user}/repos?per_page=5&sort=created:asc&client_id=${process.env.GITHUB_CLIENT_ID}&client_secret=${process.env.GITHUB_CLIENT_SECRET}`);
+    const profileResponse = await axios.get(`https://api.github.com/users/${user}?client_id=${process.env.GITHUB_CLIENT_ID}&client_secret=${process.env.GITHUB_CLIENT_SECRET}`);
+    const reposResponse = await axios.get(`https://api.github.com/users/${user}/repos?per_page=5&sort=created:asc&client_id=${process.env.GITHUB_CLIENT_ID}&client_secret=${process.env.GITHUB_CLIENT_SECRET}`);
     
-    const profile = await profileResponse.json();
-    const curRepos = await reposResponse.json();
+    const profile = await profileResponse.data;
+    const curRepos = await reposResponse.data;
 
     console.log('Profile', profile);
     console.log('Repos Info', curRepos);
-    // setGithubUser(profile);
+    setGithubUser(profile);
+    setGithubState({
+      ...githubState, repositories: curRepos
+    });
+
     }
     catch(e: any) {
       console.log(e);
@@ -65,14 +90,16 @@ function Dashboard() {
 //   };
 
   const fetchRepos = async () => {
-    await setRepos(localRepos);
-    console.log(repos)
+    console.log(db.userRepos);
+    setRepos(db.userRepos);
+    console.log(repos);
   }
 
   useEffect(() => {
     // fetchGithubRepos(githubUserName);
     // setRepos(localRepos);
-
+    fetchRepos();
+    console.log("State", githubState)
   }, []);
   
 //   // const handleCreate = () => {
@@ -140,7 +167,7 @@ function Dashboard() {
 
       <button className="btn btn-outline-success w-100 m-2" onClick={() => {
         // console.log(githubUserName);
-        setGithubUser(user);
+        setGithubUser(db.userProfile);
         // fetchRepos();
         // console.log(repos);
         fetchGithubRepos(githubUserName)
@@ -149,7 +176,7 @@ function Dashboard() {
       </button>
       
       <div className="card">
-        <div className="row">
+        <div className="row card-body">
             <div className="col-md-3">
                 <img src="${githubUser.avatar_url}" alt="" className="img-fluid mb-2" />
                 <a href="${githubUser.html_url}" target="_blank" className="btn btn-primary btn-block"> View Profile</a>
@@ -170,26 +197,7 @@ function Dashboard() {
         </div>
       </div>
       <hr />
-      <div className="row">
-        <div className="row row2-cols-1 row-cols-md-5 g-4">
-          {repos && repos.map((repo:any) => {
-            <div className="card card-body mb-2">
-              <h1>ABHCD</h1>
-              <div className="row">
-                  <div className="col-sm-6">
-                      <a href="${repo.html_url}" target="_blank">{repo.name}</a>
-                      <p className="pt-2">{repo.description}</p>
-                  </div>
-                  <div className="col-sm-6">
-                      <span className="badge bg-primary"> Starts: {repo.stargazers_count}</span>
-                      <span className="badge bg-info"> Watchers: {repo.watchers_count}</span>
-                      <span className="badge bg-light"> Forks: {repo.forms_count}</span>
-                  </div>
-              </div>
-            </div>  
-          })}
-        </div>
-      </div>
+      {/* <RepoCards us /> */}
       {/* <div className="row">
         <div className="row row-cols-1 row-cols-md-5 g-4">
           {repos.map((course:any) => (
