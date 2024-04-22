@@ -11,6 +11,7 @@ import Users from "./Users";
 import App from "../App";
 import Footer from "./Footer";
 import Home from "./Home";
+import AboutUs from "./AboutUs";
 // import Users from "./Users"
 
 function Repoc() {
@@ -63,6 +64,7 @@ function Repoc() {
             <Route path="/" element={<Navigate to="Home" />} />
             <Route path="/Users/*" element={<Users />} />
             <Route path="/Home" element={<Home />} />
+            <Route path="/AboutUs" element={<AboutUs />} />
             {/* <Route path="/Courses/:cid/*" element={<Courses courses={_courses} />} /> */}
           </Routes>
         </div>
