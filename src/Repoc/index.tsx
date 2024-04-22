@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Dashboard from "./Dashboard";
+import './index.css';
 import { Routes, Route } from "react-router-dom";
 import { Navigate } from "react-router";
 // import * as client from './Courses/client'
@@ -8,6 +8,9 @@ import { Navigate } from "react-router";
 import GithubNavigation from './Navigation'
 import { Provider } from "react-redux"
 import Users from "./Users";
+import App from "../App";
+import Footer from "./Footer";
+import Home from "./Home";
 // import Users from "./Users"
 
 function Repoc() {
@@ -17,7 +20,7 @@ function Repoc() {
   //   const response = await client.fetchAllCourses();
   //   setCourses(response);
   // };
-  
+
   // useEffect(() => {
   //   findAllCourses();
   // }, []);
@@ -46,18 +49,26 @@ function Repoc() {
 
   return (
     // <Provider store={store}>
-    <div className="container">
+    <div>
       {/* <div className="d-none d-md-block"> */}
       {/* </div> */}
       <div style={{ flexGrow: 1 }}>
-        <GithubNavigation />
-        <hr />
-        <Routes>
-          <Route path="/" element={<Navigate to="Dashboard" />} />
-          <Route path="/Dashboard" element={<Dashboard />} />
-          <Route path="/Users/*" element={<Users />} />
-          {/* <Route path="/Courses/:cid/*" element={<Courses courses={_courses} />} /> */}
-        </Routes>
+        <div className="navbar" style={{"position":"fixed"}}>
+          <GithubNavigation />
+          <hr style={{"margin":"0", "color":"#2EA44F", "height":"2px"}}/>
+        </div>
+        
+        <div style={{"justifyContent":"center", "display":"flex"}}>
+          <Routes>
+            <Route path="/" element={<Navigate to="Home" />} />
+            <Route path="/Users/*" element={<Users />} />
+            <Route path="/Home" element={<Home />} />
+            {/* <Route path="/Courses/:cid/*" element={<Courses courses={_courses} />} /> */}
+          </Routes>
+        </div>
+        <div>
+          <Footer />
+        </div>
       </div>
     </div>
     // </Provider>

@@ -5,7 +5,7 @@ import Profile from "./profile";
 
 export default function Users() {
     return (
-        <div className="container-fluid">
+        <div>
             <Routes>
                 <Route path="/" element={<Navigate to="/Users/Signin" />} />
                 <Route path="/Signin" element={<Signin />} />

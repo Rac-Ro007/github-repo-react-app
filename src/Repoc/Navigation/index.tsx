@@ -17,25 +17,40 @@ function GithubNavigation() {
   ];
   const { pathname } = useLocation();
   return (
-    <div className="d-flex justify-content-between p-2">
-      <div>
-        <Link to="/Dashboard" style={{"textDecoration":"none"}}>
-          <div className="d-flex">
-            <div>
-              <FaGithub className="fs-2 f-2" color="black" />
+    <div className="d-flex">
+      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div className="container">
+          <Link to="/Home" className="navbar-brand">
+            <div className="d-flex m-2">
+              <div>
+                <FaGithub className="fs-2 f-2" color="#2EA44F" />
+              </div>
+              <div>
+                <h4 style={{ "color": "#2EA44F", "marginLeft": "10px" }}>RepoC</h4>
+              </div>
             </div>
-            <div>
-              <h4 style={{"color":"black"}}>RepoC</h4>
-            </div>
+          </Link>
+          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul className="navbar-nav">
+              <li className="nav-item">
+                <Link to='/AboutUs' className="nav-link" >About Us</Link>
+              </li>
+              <li className="nav-item">
+                <Link to='/Users/Signup' className="nav-link">Sign Up</Link>
+              </li>
+              <li className="nav-item">
+                <Link to='/Users/Signin' className="nav-link">Sign In</Link>
+              </li>
+            </ul>
           </div>
-        </Link>
-      </div>
-      <div>
-        {links.map((link, index) => (
-          <Link className="btn btn-black" to={`/Users/${link.label}`}> <i>{link.label}</i> </Link>
-        ))}
-      </div>
+        </div>
+      </nav>
     </div>
+
+
   );
 }
 export default GithubNavigation;

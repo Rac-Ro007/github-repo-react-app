@@ -1,0 +1,15 @@
+.neon-green {
+    color: #00ff8c;
+    /* Neon green color */
+    text-shadow: 0 0 10px #00ff8c, 0 0 20px #00ff8c, 0 0 30px #00ff8c, 0 0 40px #00ff8c, 0 0 70px #00ff8c, 0 0 80px #00ff8c, 0 0 100px #00ff8c, 0 0 150px #00ff8c;
+}
+
+.custom-button {
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+.custom-button:hover {
+    background-color: #2EA44F;
+    border-color: #2EA44F;
+}
+

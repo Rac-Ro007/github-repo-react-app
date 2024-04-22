@@ -8,6 +8,7 @@ import Modal from 'react-bootstrap/Modal';
 // import * as db from "../Database";
 import * as user from '../../userProfile.json'
 import localRepos from '../../githubRepos.json'
+import App from "../../App";
 
 function Dashboard() {
   // Modal config
@@ -39,30 +40,7 @@ function Dashboard() {
     catch (e: any) {
       console.log(e);
     }
-    // setRepos(curRepos)
   }
-
-  //   const createCourse = async () => {
-  //     // const newCourses = await client.createCourse(course);
-  //     // fetchAllCourses();
-  //     setCourses(newCourses);
-  //     clearCourse();
-  //     setShow(false);
-  //   };
-
-  //   const updateCourse = async (id: string) => {
-  //     const courses = await client.updateCourse(id, course);
-  //     // fetchAllCourses();
-  //     setCourses(courses);
-  //     clearCourse();
-  //     setShow(false);
-  //   };
-
-  //   const deleteCourse = async (id: string) => {
-  //     const courses = await client.deleteCourse(id);
-  //     setCourses(courses);
-  //     // fetchAllCourses();
-  //   };
 
   const fetchRepos = async () => {
     await setRepos(localRepos);
@@ -70,82 +48,33 @@ function Dashboard() {
   }
 
   useEffect(() => {
-    // fetchGithubRepos(githubUserName);
-    // setRepos(localRepos);
 
   }, []);
 
-  //   // const handleCreate = () => {
-  //   //   addNewCourse();
-  //   //   clearCourse();
-  //   //   setShow(false);
-  //   // };
-
-  //   // const handleUpdate = () => {
-  //   //   updateCourse();
-  //   //   clearCourse();
-  //   //   setShow(false);
-  //   // };
-
-  //   const handleDelete = () => {
-  //     deleteCourse(course._id);
-  //     setDeleteModal(false);
-  //   }
-
   const [deleteModal, setDeleteModal] = useState(false);
   return (
-    <div className="p-4">
-      {/* <h2>Github  ()</h2> */}
-      {/* <a className="btn btn-outline-primary" onClick={()=> setShow(!show)}
-        aria-controls="example-collapse-text"
-        aria-expanded={show}>
-        Course Operations
-      </a>
-      <Collapse in={show}>
-        <div className="p-4" id="example-collapse-text">
-          <div className="d-flex justify-content-around">
-            <input value={course.name} className="form-control m-2 w-100"
-              onChange={(e) => setCourse({ ...course, name: e.target.value }) } />
-            <input value={course.number} className="form-control m-2 w-100"
-                  onChange={(e) => setCourse({ ...course, number: e.target.value }) } />
-          </div>
-
-          <div className="d-flex justify-content-around">
-            <input value={course.startDate} className="form-control m-2 w-100" type="date"
-                  onChange={(e) => setCourse({ ...course, startDate: e.target.value }) }/>
-            <input value={course.endDate} className="form-control m-2 w-100" type="date"
-                  onChange={(e) => setCourse({ ...course, endDate: e.target.value }) } />
-          </div>
-
-          <div className="row m-2">
-            <div className="col-6">
-            <button className="btn btn-success w-100">
-              Add Course
-            </button>
-            </div>
-            <div className="col-6">
-            <button className="btn btn-primary w-100" onClick={() => {}}>
-              Update Course
-            </button>
-          </div>
-         </div>
-        </div>
-      </Collapse> */}
-
-      <input className="form-control" value={githubUserName}
-        onChange={(e) => setGithubUserName(e.target.value)}
-        placeholder="Enter your Github UserName" />
-
-      <button className="btn btn-outline-success w-100 m-2" onClick={() => {
-        // console.log(githubUserName);
-        setGithubUser(user);
-        // fetchRepos();
-        // console.log(repos);
-        fetchGithubRepos(githubUserName)
-      }}>
-        Fetch User Data
-      </button>
-
+    <div className="d-flex p-4 row" style={{ "flexGrow": "1" }}>
+      
+      <div style={{"width":"500px", "justifyContent":"center"}}>
+        <input
+          className="form-control google-search"
+          value={githubUserName}
+          onChange={(e) => setGithubUserName(e.target.value)}
+          placeholder="Enter your Github UserName"
+        />
+      </div>
+      <br />
+      <div>
+        <button className="btn btn-outline-success w-100 m-2" onClick={() => {
+          // console.log(githubUserName);
+          setGithubUser(user);
+          // fetchRepos();
+          // console.log(repos);
+          fetchGithubRepos(githubUserName)
+        }}>
+          Fetch User Data
+        </button>
+      </div>
       <div className="card">
         <div className="row">
           <div className="col-md-3">
@@ -188,56 +117,6 @@ function Dashboard() {
           })}
         </div>
       </div>
-      {/* <div className="row">
-        <div className="row row-cols-1 row-cols-md-5 g-4">
-          {repos.map((course:any) => (
-            <div className="col" style={{ width: "300px" }}>
-              <div className="card">
-                <img
-                  src="/images/canvas.jpeg"
-                  className="card-img-top"
-                  style={{ maxHeight: "150px" }}
-                />
-                <div className="card-body">
-                  <Link
-                    className="card-title"
-                    to={`/Kanbas/Courses/${course?._id}`}
-                    style={{
-                      textDecoration: "none",
-                      color: "navy",
-                      fontWeight: "bold",
-                    }}
-                  >
-                    {course}
-                  </Link>
-                  <p className="card-text">Full Stack software developer</p>
-                  <Link to={`/Kanbas/Courses/${course.id}`} className="btn btn-outline-danger w-100">
-                    Open Course
-                  </Link>
-                  <hr/>
-                  <div className="d-flex justify-content-between">
-                    <button className="btn w-100 btn-outline-warning m-2" onClick={(event) => {
-                        event.preventDefault();
-                        setShow(true);
-                        setRepo(course);
-                      }}>
-                      Edit
-                    </button>
-                    <button className="btn w-100 btn-outline-danger m-2" onClick={(event) => {
-                        event.preventDefault();
-                        setRepo(course);
-                        setDeleteModal(true);
-                      }}>
-                      Delete
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div> */}
-      {/* Delete Modal */}
       {deleteModal && (
         <Modal
           show={deleteModal}
