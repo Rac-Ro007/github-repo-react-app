@@ -1,8 +1,20 @@
 .navbar {
     position: fixed;
+    margin-bottom: 50px;
     top: 0;
     left: 0;
     width: 100%;
+    z-index: 10;
     background-color: #333; /* Navbar background color */
     padding: 5px 0; /* Adjust padding as needed */
-  }
+}
+
+.landing-page {
+  display: block;
+  background-image: url('/public/hero.jpg'); 
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  margin: 0;
+  padding: 0;
+}

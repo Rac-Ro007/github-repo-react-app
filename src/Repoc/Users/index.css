@@ -1,21 +1,22 @@
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap");
 
-* {
+/* * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: "Quicksand", sans-serif;
-}
+} */
 
-body {
+/* Replace 'your-gif-file.gif' with the path to your GIF file */
+/* body {
     display: block;
-    background-image: url('/Users/sameer/Masters_Docs/webdev/Rac-Roc/github-repo-react-app/public/hero.jpg'); /* Replace 'your-gif-file.gif' with the path to your GIF file */
+    background-image: url('/public/hero.jpg'); 
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
     margin: 0;
     padding: 0;
-}
+} */
 
 .ring {
     position: relative;

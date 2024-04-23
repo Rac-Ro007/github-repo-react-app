@@ -8,6 +8,16 @@
     transition: background-color 0.3s, border-color 0.3s, color 0.3s;
 }
 
+.landing-page {
+    display: block;
+    background-image: url('/public/hero.jpg'); 
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+}
+
 .custom-button:hover {
     background-color: #2EA44F;
     border-color: #2EA44F;

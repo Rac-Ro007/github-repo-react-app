@@ -1,6 +1,7 @@
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { FaBan, FaCloudDownloadAlt, FaGithub, FaGithubAlt, FaHeadphones, FaMusic } from "react-icons/fa";
 import './temp.css';
+import Footer from "../Footer";
 
 export default function Home() {
     return (
@@ -52,6 +53,8 @@ export default function Home() {
                     </Row>
                 </Container>
             </section>
+        
+            <Footer/>
         </div>
     );
 }

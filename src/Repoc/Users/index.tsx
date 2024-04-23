@@ -1,7 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import Signin from "./signin";
 import Signup from "./singup";
-import Profile from "./profile";
 import AboutUs from "../AboutUs";
 
 export default function Users() {

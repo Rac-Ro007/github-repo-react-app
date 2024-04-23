@@ -12,10 +12,10 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
-    <div style={{fontStyle}}>
-    <App />
-    </div>
-    {/* <App/> */}
+    {/* <div style={{fontStyle}}>
+      <App />
+    </div> */}
+    <App/>
   </React.StrictMode>
 );
 
