@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Collapse from 'react-bootstrap/Collapse';
-import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
 import * as db from "../../db";
 import RepoCards from "./repoCards";
