@@ -244,8 +244,8 @@ const Profile = () => {
                     onChange={(e) => dispatch(setCollection({ 
                         ...collection, collectionType: e.target.value }))}
                     >
-                        <option value="Private">Private</option>
                         <option value="Public">Public</option>
+                        <option value="Private">Private</option>
                     </select>
                     <input className="form-control m-2" value={collection.collectionTags}
                         placeholder="Enter Collection Tags"

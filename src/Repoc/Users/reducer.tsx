@@ -8,7 +8,7 @@ const initialState:any = {
   collection: {   
     collectionName: "UI/UX Design Inspirations",
     collectionTags: ["ui/ux design", "user experience", "user interface"],
-    collectionType: "Public",
+    collectionType: "",
     githubRepos: [],
     ownerName: "",
     collaborators: [],
@@ -35,18 +35,18 @@ const collectionsSlice = createSlice({
     },
 
     addCollection: (state, action) => {
-      state.collectionsOwned = [action.payload, ...state.Collections];
+      state.collectionsOwned = [action.payload, ...state.collectionsOwned];
     },
 
 
     deleteCollection: (state, action) => {
-      state.collections = state.collections.filter(
+      state.collectionsOwned = state.collectionsOwned.filter(
         (module:any) => module._id !== action.payload
       );
     },
 
     updateCollection: (state:any, action) => {
-      state.collectionsOwned = state.collections.map((collection:any) => {
+      state.collectionsOwned = state.collectionsOwned.map((collection:any) => {
         if (collection._id === action.payload._id) {
           return action.payload;
         } else {
