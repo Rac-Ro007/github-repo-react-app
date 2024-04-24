@@ -2,10 +2,9 @@ import axios from "axios";
 
 const API_BASE = process.env.REACT_APP_API_BASE;
 const COLLECTIONS_API = `${API_BASE}/repoc/api/collections`;
-const MODULES_API = `${API_BASE}/api/modules`;
 
-export const fetchCollectionsForCourse = async (courseId?: string) => {
-    const response = await axios.get(COLLECTIONS_API + `/${courseId}/modules`);
+export const fetchCollectionsForUser = async (userId?: string) => {
+    const response = await axios.post(COLLECTIONS_API + `/`, {userId: userId});
     return response.data;
 }
 

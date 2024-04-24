@@ -11,7 +11,8 @@ import { IoPeopleSharp } from "react-icons/io5";
 import { RepocState } from "../../store";
 import { useParams } from "react-router";
 import { RiExternalLinkFill } from "react-icons/ri";
-import { addCollection, deleteCollection, setCollectionsOwned, updateCollection } from "../Users/reducer";
+import { addCollection, deleteCollection, setCollectionsOwned, 
+    updateCollection, setCollection, setCollectionsSavedBy, setCollectionsStarred } from "../Users/reducer";
 
 const CollectionDetails = () => {
     // State variables to manage user profile information
@@ -20,32 +21,8 @@ const CollectionDetails = () => {
     const [password, setPassword] = useState('');
     // Add more state variables as needed
 
-    // State variable to manage the active tab
     const [activeTab, setActiveTab] = useState('Collections');
     const [showModal, setShowModal] = useState(false);
-
-    const [repo, setRepo] = useState<any>({})
-    const [repos, setRepos] = useState<any>([{
-        "id": 789172119,
-        "node_id": "R_kgDOLwnPlw",
-        "name": "Collection 1",
-    },
-    { 
-        "id": 789172119,
-        "node_id": "R_kgDOLwnPlw",
-        "name": "Collection 2",
-    },
-    { 
-        "id": 789172119,
-        "node_id": "R_kgDOLwnPlw",
-        "name": "Collection 3",
-    },
-    { 
-        "id": 789172119,
-        "node_id": "R_kgDOLwnPlw",
-        "name": "Collection 4",
-    },
-    ])
 
     const collectionsOwnedList = useSelector((state: RepocState) => 
         state.collectionsReducer.collectionsOwned);
@@ -57,11 +34,14 @@ const CollectionDetails = () => {
         state.collectionsReducer.collection);
     const dispatch = useDispatch();
     
-    const fetchUserCollections = async(cid?:string) => {
-        const collections = await client.fetchCollectionsForCourse(cid)
+    const fetchUserCollections = async(uid?:string) => {
+        const collections = await client.fetchCollectionsForUser(uid)
         console.log("fetched Collections", collections)
-        dispatch(setCollectionsOwned(collections))
-        // setModuleList(modules)
+        dispatch(setCollectionsOwned(collections.collectionsOwned))
+        dispatch(setCollectionsStarred(collections.collectionsStarred))
+        dispatch(setCollectionsSavedBy(collections.collectionsSavedBy))
+        console.log(collections.collectionsOwned[0])
+        dispatch(setCollection(collections.collectionsOwned[0]));
     }
 
     // const handleAddCollection = () => {
@@ -70,6 +50,19 @@ const CollectionDetails = () => {
     //     dispatch(addCollection(collection));
     //     });
     // };
+
+    useEffect(() => {
+        fetchUserCollections(collectionId);
+
+    }, [])
+
+    const clearCollection = () => dispatch(setCollection([]))
+
+    const handleCreate = () => {
+        setShowModal(false);
+        clearCollection();
+        // fetchModules(cid);
+      };
 
     const handleDeleteCollection = (collectionId: string, userId: string) => {
         client.deleteCollection(collectionId, userId).then((collection:any) => {
@@ -89,37 +82,34 @@ const CollectionDetails = () => {
         // Logic to update user profile
     };
 
-    // useEffect(() => {s
-    //     fetchUserCollections();
-    // }, [])
-
     return (
         <div className="container mt-5">
-            <div className="row">
-                <h3>Collection Details</h3>
+            <h3>Collection Details</h3>
+            <hr style={{width:"25%"}} />
+            <div className="row pt-1">
                 {/* Left column for updating user profile */}
                 <div className="col-md-4 p-3">
-                    <h2>Collection Name</h2>
+                    <h2>{collection.collectionName}</h2>
                     <div className="pt-3">
-                        <h4>Saved By: </h4>
+                        <h4>Type: {collection.collectionType}</h4>
                     </div>
                     <div className="pt-3">
                         <h4>Collaborators: </h4>
                     </div>
                     <div className="pt-3">
-                        <h4>Owner: </h4>
+                        <h4>Owner:{collection.owner} </h4>
                     </div>
                     <div className="pt-3">
                         <h4>Tags</h4>
-                        <button className="btn btn-sm rounded-pill">Data Science</button>
-                        <button className="btn btn-sm rounded-pill">AI</button>
-                        <button className="btn btn-sm rounded-pill">Web Dev</button>
+                        {collection.collectionTags.map((coll:any) => (
+                            <button className="badge rounded-pill bg-dark" style={{marginRight:"3px", marginBottom:"3px"}}>{coll}</button>
+                        ))}
                     </div>
                 </div>
                 {/* Right column for tabs */}
                 <div className="col-md-8 p-3">
                     {/* <h2>Tabs</h2> */}
-                    <h4 className="text-divider">Collection </h4>
+                    <h5 className="text-divider">GitHub Repositories </h5>
                     {/* Render content based on active tab */}
                     
                     <div className="container pt-2">
@@ -128,7 +118,7 @@ const CollectionDetails = () => {
                             {/* <button className="btn btn-primary" onClick={() => setShowModal(true)}>New Collectiom</button> */}
                         </div>
                     <div className="row">
-                        {repos.map((repo:any) => (
+                        {collectionsOwnedList.map((repo:any) => (
                         <div className="col-md-4">
                         <div className="card repo-card p-3 mb-2 bg-dark text-white mb-4" key={repo.id}>
                             <div className="d-flex justify-content-between">

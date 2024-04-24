@@ -108,7 +108,7 @@ const Profile = () => {
                             <button className={`nav-link ${activeTab === 'Starred' ? 'active' : ''}`} onClick={() => setActiveTab('Starred')}>Starred</button>
                         </li>
                         <li className="nav-item">
-                            <button className={`nav-link ${activeTab === 'Tags' ? 'active' : ''}`} onClick={() => setActiveTab('Tags')}>Tags</button>
+                            <button className={`nav-link ${activeTab === 'Tags' ? 'active' : ''}`} onClick={() => setActiveTab('Tags')}>Saved By</button>
                         </li>
                     </ul>
                     {/* Render content based on active tab */}

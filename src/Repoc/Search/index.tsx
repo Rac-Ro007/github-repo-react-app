@@ -5,9 +5,11 @@ import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
 import * as db from "../../db";
 import { FaStar } from "react-icons/fa6";
+import { SiTurborepo } from "react-icons/si";
 import { RiGitForkFill } from "react-icons/ri";
 import { ImGithub } from "react-icons/im";
 import { IoPeopleSharp } from "react-icons/io5";
+import * as client from "./client";
 // import * as user from '../../userProfile.json'
 // import localRepos from '../../githubRepos.json'
 
@@ -16,31 +18,42 @@ function Search() {
   const [show, setShow] = useState(false);
   const [githubUserName, setGithubUserName] = useState("");
   const [githubUser, setGithubUser] = useState({} as any);
-  const [repos, setRepos] = useState([] as any);
+  const [searchDataList, setSearchDataList] = useState([]);
+  const [collectionsList, setCollectionsList ] = useState([] as any);
   const [repo, setRepo] = useState({} as any);
   const [language, setLanguage] = useState("");
   const [tag, setTag] = useState("");
   const [repository, setRepository] = useState("");
 
-  const clearCourse = () => setRepo([]);
 
-  const fetchRepos = async () => {
-    console.log(db.userRepos);
-    setRepos(db.userRepos);
-    console.log(repos);
+  const fetchCollections = async () => {
+    const collections = await client.getAllCollections();
+    console.log("fetched collection", collections)
+    setCollectionsList(collections)
+    // console.log(collectionList);
   }
 
+  const searchData = async(query?:string) => {
+    const collections = await client.searchGithubRepos(query)
+    console.log("fetched searched data", collections)
+    setSearchDataList(collections)
+  }
+
+  const handleSearch = () => {
+    const query = `${language ? 'language:' + language : ''} ${tag ? ' tag:' + tag : ''}${repository ? ' repository:' + repository : ''}`;
+    console.log(query);
+    searchData(query.trim());
+  };
+
   useEffect(() => {
-    fetchRepos();
+    fetchCollections();
   }, []);
 
-  const [deleteModal, setDeleteModal] = useState(false);
   return (
-    <div className="p-4">
-      <h1>RepoC</h1>
-      <hr />
+    <div className="p-4 w-100 text-center">
+      <h2 className="pt-2">Search what you are Looking For</h2>
       {/* Search Section */}
-      <div className="mb-4 pb-3">
+      <div className="mb-4 p-4 pb-3">
         <div className="row">
           <div className="col-md-4 mb-3">
             <input 
@@ -71,6 +84,7 @@ function Search() {
           className="btn btn-outline-success w-100" 
           onClick={() => {
             // Make a function call here based on the inputs
+            handleSearch();
           }}
         >
           Search
@@ -92,13 +106,14 @@ function Search() {
           */}
         </div>
       </div>
-      
-      <div className="mb-5 pb-3">
+
+     {/* Searched Data Section */}
+    <div className="mb-5 pb-3">
         <h2 className="text-divider">Searched Repositories</h2>
         <div className="container p-4">
             {/* Display searched repositories in cards */}
             <div className="row">
-            {repos.map((repo: any) => (
+            {searchDataList.length > 0 ? (searchDataList.map((repo: any) => (
                 <div className="col-md-4">
                     <div className="card repo-card p-3 mb-2 bg-dark text-white" key={repo.id}>
                         <div className="d-flex justify-content-between">
@@ -141,10 +156,52 @@ function Search() {
                         </div>
                     </div> */}
                 </div>
-            ))}
+            ))) : (
+              <div className="container text-center m-4">
+                    <ImGithub color="grey" size={50}/>
+                    <h4 className="pt-4 text-secondary">Search for Something ;D ... </h4>
+                </div>
+            )}
             </div>
         </div>
     </div>
+    
+    {/* Collection Section */}
+    <div className="mb-5 pb-3">
+        <h2 className="text-divider">Trending Collections</h2>
+        <div className="container p-4">
+            {/* Display searched repositories in cards */}
+            <div className="row">
+              {collectionsList.length > 0 ? (collectionsList.map((repo:any) => (
+              <div className="col-md-3 mb-2">
+                  <div className="card repo-card p-3 mb-2" key={repo.id}>
+                      <div className="d-flex justify-content-between">
+                          <div className="d-flex flex-row align-items-center">
+                              <div className="icon"> <SiTurborepo color="black"/> </div>
+                              <div className="ms-2 c-details">
+                                  <h6 className="mb-0">Collection</h6> <span>{repo.collectionType}</span>
+                              </div>
+                          </div>
+                          <div className="badge badge-secondary"> <span>{repo.language}</span> </div>
+                      </div>
+                      <div className="mt-3">
+                          <h4 className="heading">{repo.collectionName}</h4>
+                          <p>Tags: {repo.collectionTags}</p>
+                      </div>
+                  </div>
+              </div>
+              ))): 
+              (
+                  <div className="container text-center m-4">
+                      <SiTurborepo color="grey" size={50}/>
+                      <h5 className="text-secondary pt-4">You dont have any collection</h5>
+                  </div>
+              )
+          } 
+          </div>
+        </div>
+    </div>
+
     </div>
   );
 }
