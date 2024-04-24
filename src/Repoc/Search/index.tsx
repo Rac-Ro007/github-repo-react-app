@@ -4,7 +4,10 @@ import Collapse from 'react-bootstrap/Collapse';
 import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
 import * as db from "../../db";
+import { FaStar } from "react-icons/fa6";
+import { RiGitForkFill } from "react-icons/ri";
 import { ImGithub } from "react-icons/im";
+import { IoPeopleSharp } from "react-icons/io5";
 // import * as user from '../../userProfile.json'
 // import localRepos from '../../githubRepos.json'
 
@@ -116,7 +119,16 @@ function Search() {
                                 </div>
                                 <div className="mt-3"> <span className="text1">32 Applied <span className="text2">of 50 capacity</span></span> </div>
                             </div>
-                            <a className="btn btn-secondary" href={repo.html_url} target="_blank">Open Repository</a>
+                            <div className="d-flex justify-content-between">
+                              <a className="btn btn-secondary" href={repo.html_url} target="_blank">Open Repository</a>
+                              <div className="ms-auto" style={{ alignSelf: "center" }}>
+                                <span className="float-end">
+                                  <a style={{cursor:"pointer"}} ><FaStar className="color-warning ms-2" size={20} /> 67,222</a>
+                                  <a style={{cursor:"pointer"}} ><RiGitForkFill className="text-white ms-2" size={20} />200</a>
+                                  <a style={{cursor:"pointer"}} ><IoPeopleSharp className="text-white ms-2" size={20} />59,890</a>
+                                </span>
+                              </div>
+                            </div>
                         </div>
                     </div>
                     {/* <div className="card bg-dark text-white mb-3" key={repo.id}>

@@ -1,10 +1,18 @@
 import { useState, useEffect } from "react";
 import { ImGithub } from "react-icons/im";
+import { useSelector, useDispatch } from "react-redux";
 import Modal from 'react-bootstrap/Modal';
 import { SiTurborepo } from "react-icons/si";
+import axios from "axios";
+import * as client from './client';
+import { RepocState } from "../../store";
+import { useParams } from "react-router";
+import { addCollection, deleteCollection, setCollectionsOwned, setCollectionsSavedBy, setCollectionsStarred, 
+         updateCollection, setCollection } from "./reducer";
 
 const Profile = () => {
     // State variables to manage user profile information
+    const { userId } = useParams();
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     // Add more state variables as needed
@@ -13,34 +21,62 @@ const Profile = () => {
     const [activeTab, setActiveTab] = useState('Collections');
     const [showModal, setShowModal] = useState(false);
 
-    const [repo, setRepo] = useState<any>({})
-    const [repos, setRepos] = useState<any>([{
-        "id": 789172119,
-        "node_id": "R_kgDOLwnPlw",
-        "name": "Collection 1",
-    },
-    { 
-        "id": 789172119,
-        "node_id": "R_kgDOLwnPlw",
-        "name": "Collection 2",
-    },
-    { 
-        "id": 789172119,
-        "node_id": "R_kgDOLwnPlw",
-        "name": "Collection 3",
-    },
-    { 
-        "id": 789172119,
-        "node_id": "R_kgDOLwnPlw",
-        "name": "Collection 4",
-    },
-    ])
+    const collectionsOwnedList = useSelector((state: RepocState) => 
+        state.collectionsReducer.collectionsOwned);
+    const collectionsStarredList = useSelector((state: RepocState) => 
+        state.collectionsReducer.collectionsStarred);
+    const collectionsSavedByList = useSelector((state: RepocState) => 
+        state.collectionsReducer.collectionsSavedBy);
+    const collection = useSelector((state: RepocState) => 
+        state.collectionsReducer.collection);
+    const dispatch = useDispatch();
+    
+    const fetchUserCollections = async(uid?:string) => {
+        const collections = await client.fetchCollectionsForUser(uid)
+        console.log("fetched Collections", collections)
+        dispatch(setCollectionsOwned(collections.collectionsOwned))
+        dispatch(setCollectionsStarred(collections.collectionsStarred))
+        dispatch(setCollectionsSavedBy(collections.collectionsSavedBy))
+        // setModuleList(modules)
+    }
+
+    const handleAddCollection = () => {
+        client.createCollection(userId, collection).then((collection:any) => {
+        console.log("Added collection from BE post creation", collection)
+        dispatch(addCollection(collection));
+        });
+    };
+
+    const handleDeleteCollection = (collectionId: string, userId: string) => {
+        client.deleteCollection(collectionId, userId).then((collection:any) => {
+        dispatch(deleteCollection(collectionId));
+        });
+    }
+
+    const handleUpdateCollection = async () => {
+        const status = await client.updateCollection(collection);
+        dispatch(updateCollection(collection));
+    };
+
 
     // Function to handle form submission for updating user profile
     const handleSubmit = (event:any) => {
         event.preventDefault();
         // Logic to update user profile
     };
+
+    useEffect(() => {
+        fetchUserCollections(userId);
+    }, [])
+
+    const clearCollection = () => dispatch(setCollection([]))
+
+    const handleCreate = () => {
+        handleAddCollection();
+        setShowModal(false);
+        clearCollection();
+        // fetchModules(cid);
+      };
 
     return (
         <div className="container mt-5">
@@ -82,34 +118,107 @@ const Profile = () => {
                                 <h3>Your Collections</h3>
                                 <button className="btn btn-primary" onClick={() => setShowModal(true)}>New Collectiom</button>
                             </div>
+                            <div className="row">
+                                {collectionsOwnedList.length > 0 ? (collectionsOwnedList.map((repo:any) => (
+                                <div className="col-md-6 mb-2">
+                                    <div className="card repo-card p-3 mb-2" key={repo.id}>
+                                        <div className="d-flex justify-content-between">
+                                            <div className="d-flex flex-row align-items-center">
+                                                <div className="icon"> <SiTurborepo color="black"/> </div>
+                                                <div className="ms-2 c-details">
+                                                    <h6 className="mb-0">Collection</h6> <span>{repo.collectionType}</span>
+                                                </div>
+                                            </div>
+                                            <div className="badge badge-secondary"> <span>{repo.language}</span> </div>
+                                        </div>
+                                        <div className="mt-3">
+                                            <h4 className="heading">{repo.collectionName}</h4>
+                                            <p>Tags: {repo.collectionTags}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                ))): 
+                                (
+                                    <div className="container text-center m-4">
+                                        <ImGithub color="black" size={20}/>
+                                        <h5>You dont have any collection</h5>
+                                    </div>
+                                )
+                            } 
+                            </div>
+                        </div>
+                    )}
+                    {activeTab === 'Starred' && 
+                    <div className="container pt-2">
+                        <div className="d-flex justify-content-between pb-2">
+                            <h3>Your Collections</h3>
+                            <button className="btn btn-primary" onClick={() => setShowModal(true)}>New Collectiom</button>
+                        </div>
                         <div className="row">
-                            {repos.map((repo:any) => (
+                            {collectionsStarredList?.length > 0 ? (collectionsStarredList.map((repo:any) => (
                             <div className="col-md-6 mb-2">
                                 <div className="card repo-card p-3 mb-2" key={repo.id}>
                                     <div className="d-flex justify-content-between">
                                         <div className="d-flex flex-row align-items-center">
                                             <div className="icon"> <SiTurborepo color="black"/> </div>
                                             <div className="ms-2 c-details">
-                                                <h6 className="mb-0">Collection</h6> <span>1 days ago</span>
+                                                <h6 className="mb-0">Collection</h6> <span>{repo.collectionType}</span>
                                             </div>
                                         </div>
                                         <div className="badge badge-secondary"> <span>{repo.language}</span> </div>
                                     </div>
                                     <div className="mt-3">
-                                        <h3 className="heading">{repo.name}</h3>
-                                        <p>{repo.description}</p>
+                                        <h4 className="heading">{repo.collectionName}</h4>
+                                        <p>Tags: {repo.collectionTags}</p>
                                     </div>
                                 </div>
-                             </div>
-                            ))}
+                            </div>
+                            ))): 
+                            (
+                                <div className="container text-center mt-5">
+                                    <ImGithub color="grey" size={40}/>
+                                    <h5>You dont have any collection</h5>
+                                </div>
+                            )
+                        } 
                         </div>
-                        </div>
-                    )}
-                    {activeTab === 'Starred' && 
-                        <div>Starred content goes here</div>
+                    </div>
                     }
                     {activeTab === 'Tags' && 
-                        <div>Tags content goes here</div>
+                        <div className="container pt-2">
+                        <div className="d-flex justify-content-between pb-2">
+                            <h3>Your Collections</h3>
+                            <button className="btn btn-primary" onClick={() => setShowModal(true)}>New Collectiom</button>
+                        </div>
+                        <div className="row">
+                            {collectionsSavedByList?.length > 0 ? (collectionsSavedByList.map((repo:any) => (
+                            <div className="col-md-6 mb-2">
+                                <div className="card repo-card p-3 mb-2" key={repo.id}>
+                                    <div className="d-flex justify-content-between">
+                                        <div className="d-flex flex-row align-items-center">
+                                            <div className="icon"> <SiTurborepo color="black"/> </div>
+                                            <div className="ms-2 c-details">
+                                                <h6 className="mb-0">Collection</h6> <span>{repo.collectionType}</span>
+                                            </div>
+                                        </div>
+                                        <div className="badge badge-secondary"> <span>{repo.language}</span> </div>
+                                    </div>
+                                    <div className="mt-3">
+                                        <h4 className="heading">{repo.collectionName}</h4>
+                                        <p>Tags: {repo.collectionTags}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            ))): 
+                            (
+                                <div className="container text-center mt-5">
+                                    <ImGithub color="grey" size={40}/>
+                                    <h5>You dont have any collection</h5>
+                                </div>
+                            )
+                        } 
+                        </div>
+                    </div>
                     }
                 </div>
             </div>
@@ -126,21 +235,28 @@ const Profile = () => {
                 <Modal.Body>
                     <div className="container align-items-center">
                     <div className="p-2">
-                    <input className="form-control m-2" value=""
-                        placeholder="Enter Module Name"
-                        // onChange={(e) => dispatch(setModule({ 
-                        // ...module, name: e.target.value }))}
+                    <input className="form-control m-2" value={collection.collectionName}
+                        placeholder="Enter Collection Name"
+                        onChange={(e) => dispatch(setCollection({ 
+                            ...collection, collectionName: e.target.value }))}
                     />
-                    <textarea className="form-control m-2" value=""
-                        placeholder="Enter Module Description"
-                        // onChange={(e) => dispatch(setModule({ 
-                        // ...module, description: e.target.value }))}
+                    <select className="form-select m-2"
+                    onChange={(e) => dispatch(setCollection({ 
+                        ...collection, collectionType: e.target.value }))}
+                    >
+                        <option value="Private">Private</option>
+                        <option value="Public">Public</option>
+                    </select>
+                    <input className="form-control m-2" value={collection.collectionTags}
+                        placeholder="Enter Collection Tags"
+                        onChange={(e) => dispatch(setCollection({ 
+                            ...collection, collectionTags: [e.target.value] }))}
                     />
                     </div>
                     <div className="row m-2">
                     <div className="col-6">
-                    <button className="btn btn-success w-100">
-                        Add Module
+                    <button className="btn btn-success w-100" onClick={handleCreate}>
+                        Add Collection
                     </button>
                     </div>
                     <div className="col-6">

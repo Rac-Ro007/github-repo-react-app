@@ -14,6 +14,8 @@ import Dashboard from "./Dashboard"
 import Home from "./Home";
 import AboutUs from "./AboutUs";
 import Profile from "./Users/profile";
+import CollectionDetails from "./CollectionDetails";
+import store from "../store";
 // import Users from "./Users"
 
 function Repoc() {
@@ -37,7 +39,7 @@ function Repoc() {
   const isLandingPage = location.pathname === "/Home" || location.pathname.startsWith("/Users");
 
   return (
-    // <Provider store={store}>
+    <Provider store={store}>
     <div>
       {/* <div className="d-none d-md-block"> */}
       {/* </div> */}
@@ -57,13 +59,14 @@ function Repoc() {
             <Route path="/Users/*" element={<Users />} />
             <Route path="/Home" element={<Home />} />
             <Route path="/AboutUs" element={<AboutUs />} />
-            <Route path="/Profile" element={<Profile />} />
+            <Route path="/Profile/:userId" element={<Profile />} />
+            <Route path="/CollectionDetails/:collectionId" element={<CollectionDetails />} />
             {/* <Route path="/Courses/:cid/*" element={<Courses courses={_courses} />} /> */}
           </Routes>
         </div>
       </div>
     </div>
-    // </Provider>
+    </Provider>
   );
 }
 export default Repoc;
