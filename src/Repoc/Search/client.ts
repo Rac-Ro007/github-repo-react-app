@@ -8,10 +8,23 @@ export const searchGithubRepos = async (query?: string) => {
     return response.data;
 }
 
+export const fetchCollectionsForUser = async (userId?: string) => {
+    const response = await axios.post(COLLECTIONS_API + `/`, {userId: userId});
+    return response.data;
+}
+
 export const getCollectionsForUser = async (id: any) => {
     const response = await axios.post(API_BASE + `/repoc/api/collections`, {userId: id});
     return response.data;
 }
+
+export const addToCollection = async (collectionId:any, githubRepo:any) => {
+    const response = await axios.post(
+      `${COLLECTIONS_API}/${collectionId}/github-repos`,
+      githubRepo
+    );
+    return response.data;
+};
 
 // export const getAllCollections = async (query?: string) => {
 //     const response = await axios.post(COLLECTIONS_API + ``);

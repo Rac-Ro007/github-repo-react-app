@@ -1,32 +1,41 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Collapse from 'react-bootstrap/Collapse';
 import Modal from 'react-bootstrap/Modal';
-import axios from 'axios';
-import * as db from "../../db";
 import { FaStar } from "react-icons/fa6";
+import { RepocState } from "../../store";
 import { GoLinkExternal } from "react-icons/go";
 import { MdOutlinePlaylistAdd } from "react-icons/md";
 import { SiTurborepo } from "react-icons/si";
 import { RiGitForkFill } from "react-icons/ri";
 import { ImGithub } from "react-icons/im";
 import { IoPeopleSharp } from "react-icons/io5";
+import { useSelector, useDispatch } from "react-redux";
 import * as client from "./client";
+import { useParams } from "react-router";
+import { setSearchGithubData } from "./reducer";
+import { setCollectionsOwned } from "../Users/reducer";
 // import * as user from '../../userProfile.json'
 // import localRepos from '../../githubRepos.json'
 
 function Search() {
   // Modal config
+  const { userId } = useParams();
   const [show, setShow] = useState(false);
   const [githubUserName, setGithubUserName] = useState("");
   const [githubUser, setGithubUser] = useState({} as any);
   const [searchDataList, setSearchDataList] = useState([]);
   const [collectionsList, setCollectionsList ] = useState([] as any);
   const [repo, setRepo] = useState({} as any);
+  const dispatch = useDispatch();
   const [language, setLanguage] = useState("");
   const [tag, setTag] = useState("");
   const [repository, setRepository] = useState("");
+  const [showModal, setShowModal] = useState(false);
 
+  const searchGithubData = useSelector((state: RepocState) => 
+        state.searchGithubReducer.searchGithubData);
+
+  console.log(searchGithubData);
 
   // const fetchCollections = async () => {
   //   const collections = await client.getAllCollections();
@@ -34,11 +43,22 @@ function Search() {
   //   setCollectionsList(collections)
   //   // console.log(collectionList);
   // }
+  const fetchUserCollections = async(uid?:string) => {
+    const collections = await client.fetchCollectionsForUser(uid)
+    console.log("fetched Collections", collections)
+    dispatch(setCollectionsOwned(collections.collectionsOwned));
+    // setModuleList(modules)
+  }
+
+  const handleAddToCollection = () => {
+
+  }
 
   const searchData = async(query?:string) => {
     const collections = await client.searchGithubRepos(query)
     console.log("fetched searched data", collections)
-    setSearchDataList(collections.gitRepos);
+    // setSearchDataList(collections.gitRepos);
+    dispatch(setSearchGithubData(collections.gitRepos));
     setCollectionsList(collections.collections);
   }
 
@@ -48,9 +68,11 @@ function Search() {
     searchData(query.trim());
   };
 
-  // useEffect(() => {
-  //   fetchCollections();
-  // }, []);
+  useEffect(() => {
+    if (userId) {
+      fetchUserCollections(userId);
+    }
+  }, []);
 
   return (
     <div className="p-4 w-100 text-center">
@@ -121,29 +143,29 @@ function Search() {
         <div className="container p-4">
             {/* Display searched repositories in cards */}
             <div className="row">
-            {searchDataList.length > 0 ? (searchDataList.map((repo: any) => (
+            {searchGithubData.length > 0 ? (searchGithubData.map((repo: any) => (
                 <div className="col-md-4">
                     <div className="card repo-card p-3 mb-2 bg-dark text-white" key={repo.gitId}>
                         <div className="d-flex justify-content-between">
                             <div className="d-flex flex-row align-items-center">
                                 <div className="icon"> <ImGithub color="black"/> </div>
                                 <div className="ms-2 c-details">
-                                    <h6 className="mb-0">Github</h6> <span>1 days ago</span>
+                                    <h6 className="mb-0">Github</h6> <span>Public</span>
                                 </div>
                             </div>
                             <div className="badge badge-secondary"> <span>{repo.language}</span> </div>
                         </div>
-                        <div className="mt-5">
+                        <div className="mt-3">
                             <h3 className="heading"><a href={repo.htmlURL} style={{textDecoration:"none", color:"white"}} className="mt-5 heading" target="_blank">{repo.name} <GoLinkExternal size={15}/></a></h3>
                             {/* <p>{repo.description}</p> */}
-                            <div className="mt-5">
+                            <div className="mt-3 mb-2">
                                 <div className="progress">
                                     {/* <div className="progress-bar" role="progressbar" style={{width: "50%"}} aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div> */}
                                 </div>
                                 <div className="mt-3"> <span className="text1">Topics:  <span className="text2">{repo.topics.join(', ')}</span></span> </div>
                             </div>
                             <div className="d-flex justify-content-between">
-                              <a className="btn btn-secondary" href={repo.htmlURL} target="_blank"><MdOutlinePlaylistAdd size={30}/></a>
+                              <a className="btn btn-dark" href={repo.htmlURL} target="_blank"><MdOutlinePlaylistAdd size={30}/></a>
                               <div className="ms-auto" style={{ alignSelf: "center" }}>
                                 <span className="float-end">
                                   <a style={{cursor:"pointer"}} ><FaStar className="color-warning ms-2" size={20} /> {repo.stargazerCount}</a>
@@ -208,6 +230,42 @@ function Search() {
           } 
           </div>
         </div>
+        {/* Insertion Modal */}
+        {showModal && (
+        <Modal 
+            show={showModal}
+            onHide={()=> {setShowModal(false);}}
+            aria-labelledby="contained-modal-title-vcenter"
+            centered>
+            <Modal.Header closeButton>
+                <Modal.Title>Add / Update Collection</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <div className="container align-items-center">
+                <div className="p-2">
+                <select className="form-select m-2"
+                // onChange={(e) => ()}
+                >
+                    <option value="Public">Public</option>
+                    <option value="Private">Private</option>
+                </select>
+                </div>
+                <div className="row m-2">
+                <div className="col-6">
+                <button className="btn btn-success w-100" onClick={handleAddToCollection}>
+                    Add Collection
+                </button>
+                </div>
+                <div className="col-6">
+                <button className="btn btn-primary w-100">
+                    Update
+                </button>
+                </div>
+                </div>
+            </div>
+            </Modal.Body>
+        </Modal>
+            )}
     </div>
 
     </div>

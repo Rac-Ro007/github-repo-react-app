@@ -106,7 +106,7 @@ const CollectionDetails = () => {
                     </div>
                     <div className="pt-3">
                         <h4>Tags</h4>
-                        {collection.collectionTags.map((coll:any) => (
+                        {collection.collectionTags && collection.collectionTags.map((coll:any) => (
                             <button className="badge rounded-pill bg-dark" style={{marginRight:"3px", marginBottom:"3px"}}>{coll}</button>
                         ))}
                     </div>
@@ -123,7 +123,7 @@ const CollectionDetails = () => {
                             {/* <button className="btn btn-primary" onClick={() => setShowModal(true)}>New Collectiom</button> */}
                         </div>
                     <div className="row">
-                        {collectionsOwnedList.map((repo:any) => (
+                        {collectionsOwnedList && collectionsOwnedList.map((repo:any) => (
                         <div className="col-md-4">
                         <div className="card repo-card p-3 mb-2 bg-dark text-white mb-4" key={repo.id}>
                             <div className="d-flex justify-content-between">
