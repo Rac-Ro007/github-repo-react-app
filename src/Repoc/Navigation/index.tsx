@@ -7,7 +7,7 @@ import {
 } from "react-icons/fa";
 import { FaN } from "react-icons/fa6";
 import Signin from "../Users/signin";
-import Signup from "../Users/singup";
+import Signup from "../Users/signup";
 import { NONAME } from "dns";
 
 function GithubNavigation() {
@@ -21,15 +21,24 @@ function GithubNavigation() {
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <div className="container">
           <Link to="/Home" className="navbar-brand">
-            <div className="d-flex m-2">
-              <div>
-                <FaGithub className="fs-2 f-2" color="#2EA44F" />
-              </div>
-              <div>
-                <h4 style={{ "color": "#2EA44F", "marginLeft": "10px" }}>RepoC</h4>
-              </div>
+            <div className="d-flex align-items-center">
+              <FaGithub className="fs-2 f-2" color="#2EA44F" />
+              <h4 className="ms-2 mb-0" style={{ color: "#2EA44F" }}>RepoC</h4>
             </div>
           </Link>
+          
+          <div className="flex-grow-1 d-flex justify-content-center">
+            <div className="input-group">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Search..."
+              />
+              <button className="btn btn-outline-light" type="button">
+                <i className="bi bi-search"></i>
+              </button>
+            </div>
+          </div>
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
@@ -46,9 +55,13 @@ function GithubNavigation() {
               </li>
             </ul>
           </div>
+
         </div>
       </nav>
     </div>
+
+
+
 
 
   );
