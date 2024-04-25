@@ -7,8 +7,10 @@ import axios from "axios";
 import * as client from './client';
 import { RepocState } from "../../store";
 import { useParams } from "react-router";
+import { Link } from "react-router-dom";
 import { addCollection, deleteCollection, setCollectionsOwned, setCollectionsSavedBy, setCollectionsStarred, 
          updateCollection, setCollection } from "./reducer";
+import Swal from 'sweetalert2'
 
 const Profile = () => {
     // State variables to manage user profile information
@@ -44,6 +46,20 @@ const Profile = () => {
         client.createCollection(userId, collection).then((collection:any) => {
         console.log("Added collection from BE post creation", collection)
         dispatch(addCollection(collection));
+        if(collection) {
+            Swal.fire({
+                title: "Good job!",
+                text: "Collection Added Successfully!!",
+                icon: "success"
+            });
+        }
+        else {
+            Swal.fire({
+                title: "Oops!",
+                text: "Something went wrong, Try Again!",
+                icon: "error"
+            });
+        }
         });
     };
 
@@ -121,6 +137,7 @@ const Profile = () => {
                             <div className="row">
                                 {collectionsOwnedList.length > 0 ? (collectionsOwnedList.map((repo:any) => (
                                 <div className="col-md-6 mb-2">
+                                    <Link to={`/CollectionDetails/${repo._id}`} style={{textDecoration:"none"}}>
                                     <div className="card repo-card p-3 mb-2" key={repo.id}>
                                         <div className="d-flex justify-content-between">
                                             <div className="d-flex flex-row align-items-center">
@@ -133,9 +150,15 @@ const Profile = () => {
                                         </div>
                                         <div className="mt-3">
                                             <h4 className="heading">{repo.collectionName}</h4>
-                                            <p>Tags: {repo.collectionTags}</p>
+                                            {/* <p>Tags: {repo.collectionTags}</p> */}
+                                            <div className="pt-1">
+                                                {collection.collectionTags.map((coll:any) => (
+                                                    <button className="badge rounded-pill bg-dark" style={{marginRight:"3px", marginBottom:"3px"}}>{coll}</button>
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
+                                    </Link>
                                 </div>
                                 ))): 
                                 (

@@ -8,6 +8,11 @@ export const fetchCollectionsForUser = async (userId?: string) => {
     return response.data;
 }
 
+export const fetchCollectionsByID = async (collectionId?: string) => {
+    const response = await axios.get(COLLECTIONS_API + `/${collectionId}`);
+    return response.data;
+}
+
 export const createCollection = async (userId:any, collection:any) => {
     const response = await axios.post(
       `${COLLECTIONS_API}/${userId}`,

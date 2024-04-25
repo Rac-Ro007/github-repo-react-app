@@ -34,14 +34,20 @@ const CollectionDetails = () => {
         state.collectionsReducer.collection);
     const dispatch = useDispatch();
     
-    const fetchUserCollections = async(uid?:string) => {
-        const collections = await client.fetchCollectionsForUser(uid)
-        console.log("fetched Collections", collections)
-        dispatch(setCollectionsOwned(collections.collectionsOwned))
-        dispatch(setCollectionsStarred(collections.collectionsStarred))
-        dispatch(setCollectionsSavedBy(collections.collectionsSavedBy))
-        console.log(collections.collectionsOwned[0])
-        dispatch(setCollection(collections.collectionsOwned[0]));
+    // const fetchUserCollectionByIDfetchUserCollections = async(uid?:string) => {
+    //     const collections = await client.fetchCollectionsForUser(uid)
+    //     console.log("fetched Collections", collections)
+    //     dispatch(setCollectionsOwned(collections.collectionsOwned))
+    //     dispatch(setCollectionsStarred(collections.collectionsStarred))
+    //     dispatch(setCollectionsSavedBy(collections.collectionsSavedBy))
+    //     console.log(collections.collectionsOwned[0])
+    //     dispatch(setCollection(collections.collectionsOwned[0]));
+    // }
+
+    const fetchUserCollectionByID = async(collectionId?:string) => {
+        const collection = await client.fetchCollectionsByID(collectionId)
+        console.log("fetched Collections", collection);
+        dispatch(setCollection(collection));
     }
 
     // const handleAddCollection = () => {
@@ -52,8 +58,7 @@ const CollectionDetails = () => {
     // };
 
     useEffect(() => {
-        fetchUserCollections(collectionId);
-
+        fetchUserCollectionByID(collectionId);
     }, [])
 
     const clearCollection = () => dispatch(setCollection([]))
