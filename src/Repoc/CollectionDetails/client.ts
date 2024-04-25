@@ -2,9 +2,15 @@ import axios from "axios";
 
 const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:4000";
 const COLLECTIONS_API = `${API_BASE}/repoc/api/collections`;
+const GITREPO_API = `${API_BASE}/repoc/api/gitRepo`;
 
 export const fetchCollectionsForUser = async (userId?: string) => {
     const response = await axios.post(COLLECTIONS_API + `/`, {userId: userId});
+    return response.data;
+}
+
+export const fetchRepoById = async (gitRepoId: any) => {
+    const response = await axios.get(GITREPO_API + `/${gitRepoId}`);
     return response.data;
 }
 
