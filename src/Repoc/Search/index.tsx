@@ -5,6 +5,8 @@ import Modal from 'react-bootstrap/Modal';
 import axios from 'axios';
 import * as db from "../../db";
 import { FaStar } from "react-icons/fa6";
+import { GoLinkExternal } from "react-icons/go";
+import { MdOutlinePlaylistAdd } from "react-icons/md";
 import { SiTurborepo } from "react-icons/si";
 import { RiGitForkFill } from "react-icons/ri";
 import { ImGithub } from "react-icons/im";
@@ -26,17 +28,18 @@ function Search() {
   const [repository, setRepository] = useState("");
 
 
-  const fetchCollections = async () => {
-    const collections = await client.getAllCollections();
-    console.log("fetched collection", collections)
-    setCollectionsList(collections)
-    // console.log(collectionList);
-  }
+  // const fetchCollections = async () => {
+  //   const collections = await client.getAllCollections();
+  //   console.log("fetched collection", collections)
+  //   setCollectionsList(collections)
+  //   // console.log(collectionList);
+  // }
 
   const searchData = async(query?:string) => {
     const collections = await client.searchGithubRepos(query)
     console.log("fetched searched data", collections)
-    setSearchDataList(collections)
+    setSearchDataList(collections.gitRepos);
+    setCollectionsList(collections.collections);
   }
 
   const handleSearch = () => {
@@ -45,9 +48,9 @@ function Search() {
     searchData(query.trim());
   };
 
-  useEffect(() => {
-    fetchCollections();
-  }, []);
+  // useEffect(() => {
+  //   fetchCollections();
+  // }, []);
 
   return (
     <div className="p-4 w-100 text-center">
@@ -115,7 +118,7 @@ function Search() {
             <div className="row">
             {searchDataList.length > 0 ? (searchDataList.map((repo: any) => (
                 <div className="col-md-4">
-                    <div className="card repo-card p-3 mb-2 bg-dark text-white" key={repo.id}>
+                    <div className="card repo-card p-3 mb-2 bg-dark text-white" key={repo.gitId}>
                         <div className="d-flex justify-content-between">
                             <div className="d-flex flex-row align-items-center">
                                 <div className="icon"> <ImGithub color="black"/> </div>
@@ -126,21 +129,21 @@ function Search() {
                             <div className="badge badge-secondary"> <span>{repo.language}</span> </div>
                         </div>
                         <div className="mt-5">
-                            <h3 className="heading">{repo.name}</h3>
-                            <p>{repo.description}</p>
-                            <div className="mt-5 p-2">
+                            <h3 className="heading"><a href={repo.htmlURL} style={{textDecoration:"none", color:"white"}} className="mt-5 heading" target="_blank">{repo.name} <GoLinkExternal size={15}/></a></h3>
+                            {/* <p>{repo.description}</p> */}
+                            <div className="mt-5">
                                 <div className="progress">
                                     {/* <div className="progress-bar" role="progressbar" style={{width: "50%"}} aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div> */}
                                 </div>
-                                <div className="mt-3"> <span className="text1">32 Applied <span className="text2">of 50 capacity</span></span> </div>
+                                <div className="mt-3"> <span className="text1">Topics:  <span className="text2">{repo.topics.join(', ')}</span></span> </div>
                             </div>
                             <div className="d-flex justify-content-between">
-                              <a className="btn btn-secondary" href={repo.html_url} target="_blank">Open Repository</a>
+                              <a className="btn btn-secondary" href={repo.htmlURL} target="_blank"><MdOutlinePlaylistAdd size={30}/></a>
                               <div className="ms-auto" style={{ alignSelf: "center" }}>
                                 <span className="float-end">
-                                  <a style={{cursor:"pointer"}} ><FaStar className="color-warning ms-2" size={20} /> 67,222</a>
-                                  <a style={{cursor:"pointer"}} ><RiGitForkFill className="text-white ms-2" size={20} />200</a>
-                                  <a style={{cursor:"pointer"}} ><IoPeopleSharp className="text-white ms-2" size={20} />59,890</a>
+                                  <a style={{cursor:"pointer"}} ><FaStar className="color-warning ms-2" size={20} /> {repo.stargazerCount}</a>
+                                  <a style={{cursor:"pointer"}} ><RiGitForkFill className="text-white ms-2" size={20} />{repo.forksCount}</a>
+                                  <a style={{cursor:"pointer"}} ><IoPeopleSharp className="text-white ms-2" size={20} />{repo.watcherCount}</a>
                                 </span>
                               </div>
                             </div>
@@ -186,7 +189,7 @@ function Search() {
                       </div>
                       <div className="mt-3">
                           <h4 className="heading">{repo.collectionName}</h4>
-                          <p>Tags: {repo.collectionTags}</p>
+                          <p>Tags: {repo.collectionTags.join(', ')}</p>
                       </div>
                   </div>
               </div>
