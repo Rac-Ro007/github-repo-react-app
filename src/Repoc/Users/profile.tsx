@@ -152,7 +152,7 @@ const Profile = () => {
                                             <h4 className="heading">{repo.collectionName}</h4>
                                             {/* <p>Tags: {repo.collectionTags}</p> */}
                                             <div className="pt-1">
-                                                {collection.collectionTags.map((coll:any) => (
+                                                {collection.collectionTags && collection.collectionTags.map((coll:any) => (
                                                     <button className="badge rounded-pill bg-dark" style={{marginRight:"3px", marginBottom:"3px"}}>{coll}</button>
                                                 ))}
                                             </div>
@@ -245,7 +245,7 @@ const Profile = () => {
                     }
                 </div>
             </div>
-            {/* Delete Modal */}
+            {/* Insertion Modal */}
             {showModal && (
             <Modal 
                 show={showModal}
