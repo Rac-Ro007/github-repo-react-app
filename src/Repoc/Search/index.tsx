@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Collapse from 'react-bootstrap/Collapse';
 import Modal from 'react-bootstrap/Modal';
@@ -16,7 +16,7 @@ import * as client from "./client";
 // import localRepos from '../../githubRepos.json'
 
 function Search() {
-    // Modal config
+  // Modal config
   const [show, setShow] = useState(false);
   const [githubUserName, setGithubUserName] = useState("");
   const [githubUser, setGithubUser] = useState({} as any);
@@ -97,16 +97,21 @@ function Search() {
       <div className="mb-5 pb-3">
         <h3 className="text-divider">Popular Tags</h3>
         <div>
-        <button type="button" className="btn btn-primary rounded-pill fs-7 m-1">JavaScript</button>
-        <button type="button" className="btn btn-secondary rounded-pill fs-7 m-1">React</button>
-        <button type="button" className="btn btn-success rounded-pill fs-7 m-1">Node.js</button>
-        <button type="button" className="btn btn-danger rounded-pill fs-7 m-1">Python</button>
-        <button type="button" className="btn btn-warning rounded-pill fs-7 m-1">Java</button>
-          {/* Render your popular tags badges here */}
-          {/* Example:
-              <span className="badge bg-primary mx-1">Tag1</span>
-              <span className="badge bg-secondary mx-1">Tag2</span>
-          */}
+          <button type="button" className="btn btn-primary rounded-pill fs-7 m-1">
+            JavaScript
+          </button>
+          <button type="button" className="btn btn-secondary rounded-pill fs-7 m-1">
+            React
+          </button>
+          <button type="button" className="btn btn-success rounded-pill fs-7 m-1">
+            Node.js
+          </button>
+          <button type="button" className="btn btn-danger rounded-pill fs-7 m-1">
+            Python
+          </button>
+          <button type="button" className="btn btn-warning rounded-pill fs-7 m-1">
+            Java
+          </button>
         </div>
       </div>
 
@@ -206,6 +211,7 @@ function Search() {
     </div>
 
     </div>
+
   );
 }
 
