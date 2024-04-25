@@ -31,12 +31,7 @@ function Repoc() {
   //   findAllCourses();
   // }, []);
 
-  const [course, setCourse] = useState({
-    _id: "1234", name: "New Course", number: "New Number",
-    startDate: "2023-09-10", endDate: "2023-12-15",
-  });
-
-  const isLandingPage = location.pathname === "/Home" || location.pathname.startsWith("/Users");
+  const isLandingPage = location.pathname === "/Home" || location.pathname === "/AboutUs" || location.pathname.startsWith("/Users");
 
   return (
     <Provider store={store}>
@@ -55,7 +50,7 @@ function Repoc() {
             <Route path="/" element={<Navigate to="Home" />} />
             <Route path="/Dashboard" element={<Dashboard />} />
             <Route path="/Repositories" element={<RepoCards />} />
-            <Route path="/Search" element={<Search />} />
+            <Route path="/Search/:userId" element={<Search />} />
             <Route path="/Users/*" element={<Users />} />
             <Route path="/Home" element={<Home />} />
             <Route path="/AboutUs" element={<AboutUs />} />

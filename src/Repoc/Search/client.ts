@@ -18,7 +18,7 @@ export const getCollectionsForUser = async (id: any) => {
     return response.data;
 }
 
-export const addToCollection = async (collectionId:any, githubRepo:any) => {
+export const addRepoToCollection = async (collectionId:any, githubRepo:any) => {
     const response = await axios.post(
       `${COLLECTIONS_API}/${collectionId}/github-repos`,
       githubRepo

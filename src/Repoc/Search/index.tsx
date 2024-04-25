@@ -14,18 +14,13 @@ import * as client from "./client";
 import { useParams } from "react-router";
 import { setSearchGithubData } from "./reducer";
 import { setCollectionsOwned } from "../Users/reducer";
-// import * as user from '../../userProfile.json'
-// import localRepos from '../../githubRepos.json'
 
 function Search() {
   // Modal config
   const { userId } = useParams();
-  const [show, setShow] = useState(false);
-  const [githubUserName, setGithubUserName] = useState("");
-  const [githubUser, setGithubUser] = useState({} as any);
-  const [searchDataList, setSearchDataList] = useState([]);
+  const [activeRepo, setActiveRepo] = useState({} as any);
+  const [activeCollectionId, setActiveCollectionId] = useState("" as any);
   const [collectionsList, setCollectionsList ] = useState([] as any);
-  const [repo, setRepo] = useState({} as any);
   const dispatch = useDispatch();
   const [language, setLanguage] = useState("");
   const [tag, setTag] = useState("");
@@ -35,23 +30,21 @@ function Search() {
   const searchGithubData = useSelector((state: RepocState) => 
         state.searchGithubReducer.searchGithubData);
 
-  console.log(searchGithubData);
+  const collectionsOwnedList = useSelector((state: RepocState) => 
+        state.collectionsReducer.collectionsOwned);
 
-  // const fetchCollections = async () => {
-  //   const collections = await client.getAllCollections();
-  //   console.log("fetched collection", collections)
-  //   setCollectionsList(collections)
-  //   // console.log(collectionList);
-  // }
+  // console.log(searchGithubData);
+
   const fetchUserCollections = async(uid?:string) => {
     const collections = await client.fetchCollectionsForUser(uid)
     console.log("fetched Collections", collections)
     dispatch(setCollectionsOwned(collections.collectionsOwned));
-    // setModuleList(modules)
   }
 
-  const handleAddToCollection = () => {
-
+  const handleAddToCollection = async () => {
+    const collections = await client.addRepoToCollection(activeCollectionId, activeRepo);
+    console.log("collection github data", collections)
+    setShowModal(false);
   }
 
   const searchData = async(query?:string) => {
@@ -59,7 +52,8 @@ function Search() {
     console.log("fetched searched data", collections)
     // setSearchDataList(collections.gitRepos);
     dispatch(setSearchGithubData(collections.gitRepos));
-    setCollectionsList(collections.collections);
+    dispatch(setCollectionsOwned(collections.collections));
+    // setCollectionsList(collections.collections);
   }
 
   const handleSearch = () => {
@@ -69,7 +63,7 @@ function Search() {
   };
 
   useEffect(() => {
-    if (userId) {
+    if (userId !== undefined) {
       fetchUserCollections(userId);
     }
   }, []);
@@ -165,7 +159,7 @@ function Search() {
                                 <div className="mt-3"> <span className="text1">Topics:  <span className="text2">{repo.topics.join(', ')}</span></span> </div>
                             </div>
                             <div className="d-flex justify-content-between">
-                              <a className="btn btn-dark" href={repo.htmlURL} target="_blank"><MdOutlinePlaylistAdd size={30}/></a>
+                              <a className="btn btn-dark" onClick={() => {setActiveRepo(repo); setShowModal(true)}}><MdOutlinePlaylistAdd size={30}/></a>
                               <div className="ms-auto" style={{ alignSelf: "center" }}>
                                 <span className="float-end">
                                   <a style={{cursor:"pointer"}} ><FaStar className="color-warning ms-2" size={20} /> {repo.stargazerCount}</a>
@@ -202,7 +196,7 @@ function Search() {
         <div className="container p-4">
             {/* Display searched repositories in cards */}
             <div className="row">
-              {collectionsList.length > 0 ? (collectionsList.map((repo:any) => (
+              {collectionsOwnedList.length > 0 ? (collectionsOwnedList.map((repo:any) => (
               <div className="col-md-3 mb-2">
                   <div className="card repo-card p-3 mb-2" key={repo.id}>
                       <div className="d-flex justify-content-between">
@@ -238,27 +232,28 @@ function Search() {
             aria-labelledby="contained-modal-title-vcenter"
             centered>
             <Modal.Header closeButton>
-                <Modal.Title>Add / Update Collection</Modal.Title>
+                <Modal.Title className="text-center" style={{color:"darkgreen"}}><b>Add {activeRepo.name} to Collection</b></Modal.Title>
             </Modal.Header>
             <Modal.Body>
               <div className="container align-items-center">
                 <div className="p-2">
                 <select className="form-select m-2"
-                // onChange={(e) => ()}
+                onChange={(e) => (setActiveCollectionId(e.target.value))}
                 >
-                    <option value="Public">Public</option>
-                    <option value="Private">Private</option>
+                  {collectionsOwnedList && collectionsOwnedList.map((collection)=> (
+                    <option value={collection._id}>{collection.collectionName}</option>
+                  ))}
                 </select>
                 </div>
                 <div className="row m-2">
                 <div className="col-6">
-                <button className="btn btn-success w-100" onClick={handleAddToCollection}>
-                    Add Collection
+                <button className="btn btn-outline-success w-100" onClick={handleAddToCollection}>
+                    Add to Collection
                 </button>
                 </div>
                 <div className="col-6">
-                <button className="btn btn-primary w-100">
-                    Update
+                <button className="btn btn-secondary w-100">
+                    Cancel
                 </button>
                 </div>
                 </div>
