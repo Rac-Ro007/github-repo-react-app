@@ -43,6 +43,7 @@ function Search() {
     const collections = await client.fetchCollectionsForUser(uid)
     console.log("fetched Collections", collections)
     setUserOwnedCollections(collections.collectionsOwned);
+    setActiveCollectionId(collections.collectionsOwned[0]?._id);
   }
 
   const fetchPublicCollections = async(type?:string) => {
@@ -55,6 +56,12 @@ function Search() {
     const collections = await client.addRepoToCollection(activeCollectionId, activeRepo);
     console.log("collection github data", collections)
     setShowModal(false);
+    Swal.fire({
+      title: "Good Job!",
+      text: "Github Repo has been added to the Collection",
+      confirmButtonText: "Keep Searching",
+      icon: "success"
+    })
   }
 
   const searchData = async(query?:string) => {
@@ -281,7 +288,7 @@ function Search() {
               <div className="container align-items-center">
                 <div className="p-2">
                 <select className="form-select m-2"
-                onChange={(e) => (setActiveCollectionId(e.target.value))}
+                onChange={(e) => {setActiveCollectionId(e.target.value)}}
                 >
                   {userOwnedCollections.length > 0 ? (userOwnedCollections.map((collection:any)=> (
                     <option value={collection._id}>{collection.collectionName}</option>
