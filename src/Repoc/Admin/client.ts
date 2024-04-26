@@ -13,6 +13,11 @@ export const deleteUser = async (userId: string) => {
     return response.data;
 } 
 
+export const fetchUserDetails = async (userId?: string) => {
+    const response = await axios.get(API_BASE + `/repoc/api/users/${userId}`);
+    return response.data;
+}
+
 export const getAllCollections = async () =>  {
     const response = await axios.get(API_BASE + `/repoc/api/collections`);
     return response.data;

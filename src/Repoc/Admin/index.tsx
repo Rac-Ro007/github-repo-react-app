@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { deleteUser, getAllUsers, getAllCollections, deleteCollection } from "./client";
+import { deleteUser, getAllUsers, getAllCollections, deleteCollection, fetchUserDetails } from "./client";
 import { ImGithub } from "react-icons/im";
 import { Link, useParams } from "react-router-dom";
 
 export default function Admin() {
   const { adminId } = useParams();
-
+  const [ admin, setAdmin ] = useState(""); 
   const [users, setUsers] = useState<any>([]);
   const [collections, setCollections] = useState<any>([]);
   const [activeTab, setActiveTab] = useState("Users");
@@ -15,7 +15,10 @@ export default function Admin() {
     const fetchUsers = async () => {
       try {
         const response = await getAllUsers();
-        setUsers(response); // Assuming response.data is the array of users
+        const filteredUsers = response.filter((user:any) => user._id !== adminId);
+        setUsers(filteredUsers); // Assuming response.data is the array of users
+        const adminUser = await fetchUserDetails(adminId);
+        setAdmin(adminUser.name);
       } catch (error) {
         console.error("Error fetching users:", error);
       }
@@ -55,8 +58,10 @@ export default function Admin() {
     <div className="container">
         <div className="p-3 d-flex justify-content-between">
           <h3>Admin Dashboard</h3>
+          <br />
           <Link className="btn btn-dark" to={`/Search/${adminId}`}>Search RepoC</Link>
         </div>
+        <h4 className="p-3">Welcome, {admin}</h4>
       <div className="p-3">
         {/* <h2>Tabs</h2> */}
         <ul className="nav nav-tabs">
