@@ -55,7 +55,7 @@ function Repoc() {
             <Route path="/Home" element={<Home />} />
             <Route path="/AboutUs" element={<AboutUs />} />
             <Route path="/Profile/:userId" element={<Profile />} />
-            <Route path="/CollectionDetails/:collectionId" element={<CollectionDetails />} />
+            <Route path="/:userId/CollectionDetails/:collectionId" element={<CollectionDetails />} />
             {/* <Route path="/Courses/:cid/*" element={<Courses courses={_courses} />} /> */}
           </Routes>
         </div>

@@ -154,7 +154,7 @@ const Profile = () => {
                             <div className="row">
                                 {collectionsOwnedList.length > 0 ? (collectionsOwnedList.map((repo:any) => (
                                 <div className="col-md-6 mb-2">
-                                    <Link to={`/CollectionDetails/${repo._id}`} style={{textDecoration:"none"}}>
+                                    <Link to={`/${userId}/CollectionDetails/${repo._id}`} style={{textDecoration:"none"}}>
                                     <div className="card repo-card p-3 mb-2" key={repo.id}>
                                         <div className="d-flex justify-content-between">
                                             <div className="d-flex flex-row align-items-center">
