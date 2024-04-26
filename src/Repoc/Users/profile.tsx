@@ -211,22 +211,29 @@ const Profile = () => {
                         <div className="row">
                             {collectionsStarredList?.length > 0 ? (collectionsStarredList.map((repo:any) => (
                             <div className="col-md-6 mb-2">
-                                <div className="card repo-card p-3 mb-2" key={repo.id}>
-                                    <div className="d-flex justify-content-between">
-                                        <div className="d-flex flex-row align-items-center">
-                                            <div className="icon"> <SiTurborepo color="black"/> </div>
-                                            <div className="ms-2 c-details">
-                                                <h6 className="mb-0">Collection</h6> <span>{repo.collectionType}</span>
-                                            </div>
+                            <Link to={`/${userId}/CollectionDetails/${repo._id}`} style={{textDecoration:"none"}}>
+                            <div className="card repo-card p-3 mb-2" key={repo.id}>
+                                <div className="d-flex justify-content-between">
+                                    <div className="d-flex flex-row align-items-center">
+                                        <div className="icon"> <SiTurborepo color="black"/> </div>
+                                        <div className="ms-2 c-details">
+                                            <h6 className="mb-0">Collection</h6> <span>{repo.collectionType}</span>
                                         </div>
-                                        <div className="badge badge-secondary"> <span>{repo.language}</span> </div>
                                     </div>
-                                    <div className="mt-3">
-                                        <h4 className="heading">{repo.collectionName}</h4>
-                                        <p>Tags: {repo.collectionTags}</p>
+                                    <div className="badge badge-secondary"> <span>{repo.language}</span> </div>
+                                </div>
+                                <div className="mt-3">
+                                    <h4 className="heading">{repo.collectionName}</h4>
+                                    {/* <p>Tags: {repo.collectionTags}</p> */}
+                                    <div className="pt-1">
+                                        {repo.collectionTags && repo.collectionTags.map((coll:any) => (
+                                            <button className="badge rounded-pill bg-dark" style={{marginRight:"3px", marginBottom:"3px"}}>{coll}</button>
+                                        ))}
                                     </div>
                                 </div>
                             </div>
+                            </Link>
+                        </div>
                             ))): 
                             (
                                 <div className="container text-center mt-5">
@@ -247,22 +254,29 @@ const Profile = () => {
                         <div className="row">
                             {collectionsSavedByList?.length > 0 ? (collectionsSavedByList.map((repo:any) => (
                             <div className="col-md-6 mb-2">
-                                <div className="card repo-card p-3 mb-2" key={repo.id}>
-                                    <div className="d-flex justify-content-between">
-                                        <div className="d-flex flex-row align-items-center">
-                                            <div className="icon"> <SiTurborepo color="black"/> </div>
-                                            <div className="ms-2 c-details">
-                                                <h6 className="mb-0">Collection</h6> <span>{repo.collectionType}</span>
-                                            </div>
+                            <Link to={`/${userId}/CollectionDetails/${repo._id}`} style={{textDecoration:"none"}}>
+                            <div className="card repo-card p-3 mb-2" key={repo.id}>
+                                <div className="d-flex justify-content-between">
+                                    <div className="d-flex flex-row align-items-center">
+                                        <div className="icon"> <SiTurborepo color="black"/> </div>
+                                        <div className="ms-2 c-details">
+                                            <h6 className="mb-0">Collection</h6> <span>{repo.collectionType}</span>
                                         </div>
-                                        <div className="badge badge-secondary"> <span>{repo.language}</span> </div>
                                     </div>
-                                    <div className="mt-3">
-                                        <h4 className="heading">{repo.collectionName}</h4>
-                                        <p>Tags: {repo.collectionTags}</p>
+                                    <div className="badge badge-secondary"> <span>{repo.language}</span> </div>
+                                </div>
+                                <div className="mt-3">
+                                    <h4 className="heading">{repo.collectionName}</h4>
+                                    {/* <p>Tags: {repo.collectionTags}</p> */}
+                                    <div className="pt-1">
+                                        {repo.collectionTags && repo.collectionTags.map((coll:any) => (
+                                            <button className="badge rounded-pill bg-dark" style={{marginRight:"3px", marginBottom:"3px"}}>{coll}</button>
+                                        ))}
                                     </div>
                                 </div>
                             </div>
+                            </Link>
+                        </div>
                             ))): 
                             (
                                 <div className="container text-center mt-5">

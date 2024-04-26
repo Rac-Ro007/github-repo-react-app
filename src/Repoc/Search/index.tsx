@@ -210,7 +210,7 @@ function Search() {
             {/* Display searched repositories in cards */}
             <div className="row">
             {collectionsOwnedList.length > 0 ? (collectionsOwnedList.map((repo:any) => (
-              <div className="col-md-3 mb-2">
+              <div className="col-md-3 mb-2 ">
                   <Link to={`/${userId}/CollectionDetails/${repo._id}`} style={{textDecoration:"none"}}>
                   <div className="card repo-card p-3 mb-2" key={repo.id}>
                       <div className="d-flex justify-content-between">
