@@ -80,6 +80,20 @@ const Profile = () => {
     const handleUserUpdate = async () => {
         const user_data = await client.updateUserDetails(userId, userDetails);
         setUserDetails(user_data);
+        if(user_data) {
+            Swal.fire({
+                title: "Good job!",
+                text: "User Details Update Successfully!!",
+                icon: "success"
+            });
+        }
+        else {
+            Swal.fire({
+                title: "Oops!",
+                text: "Something went wrong, Try Again!",
+                icon: "error"
+            });
+        }
     };
 
 
@@ -149,9 +163,9 @@ const Profile = () => {
                         <div className="container pt-2">
                             <div className="d-flex justify-content-between pb-2">
                                 <h3>Your Collections</h3>
-                                <button className="btn btn-primary" onClick={() => setShowModal(true)}>New Collectiom</button>
+                                <button className="btn btn-dark" onClick={() => {dispatch(setCollection([])); setShowModal(true)}}>New Collection</button>
                             </div>
-                            <div className="row">
+                            <div className="row text-center">
                                 {collectionsOwnedList.length > 0 ? (collectionsOwnedList.map((repo:any) => (
                                 <div className="col-md-6 mb-2">
                                     <Link to={`/${userId}/CollectionDetails/${repo._id}`} style={{textDecoration:"none"}}>
@@ -192,7 +206,7 @@ const Profile = () => {
                     <div className="container pt-2">
                         <div className="d-flex justify-content-between pb-2">
                             <h3>Your Collections</h3>
-                            <button className="btn btn-primary" onClick={() => setShowModal(true)}>New Collectiom</button>
+                            <button className="btn btn-dark" onClick={() => {dispatch(setCollection([])); setShowModal(true)}}>New Collection</button>
                         </div>
                         <div className="row">
                             {collectionsStarredList?.length > 0 ? (collectionsStarredList.map((repo:any) => (
@@ -228,7 +242,7 @@ const Profile = () => {
                         <div className="container pt-2">
                         <div className="d-flex justify-content-between pb-2">
                             <h3>Your Collections</h3>
-                            <button className="btn btn-primary" onClick={() => setShowModal(true)}>New Collectiom</button>
+                            <button className="btn btn-dark" onClick={() => {dispatch(setCollection([])); setShowModal(true)}}>New Collection</button>
                         </div>
                         <div className="row">
                             {collectionsSavedByList?.length > 0 ? (collectionsSavedByList.map((repo:any) => (

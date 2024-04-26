@@ -112,7 +112,7 @@ const CollectionDetails = () => {
             <h4>Type: {collection.collectionType}</h4>
           </div>
           <div className="pt-3">
-            <h4>Collaborators: {collection.collaborators.length}</h4>
+            <h4>Collaborators: {collection.collaborators?.length}</h4>
           </div>
           <div className="pt-3">
             <h4>Owner:{collection.ownerName} </h4>
@@ -149,7 +149,7 @@ const CollectionDetails = () => {
             <div className="row">
               {gitRepoList.length > 0 ? (
                 gitRepoList.map((repo: any) => (
-                  <div className="col-md-4">
+                  <div className="col-md-4 d-flex align-items-stretch">
                     <div
                       className="card repo-card p-3 mb-2 bg-dark text-white"
                       key={repo.gitId}
@@ -283,10 +283,15 @@ const CollectionDetails = () => {
                     </select>
                 <input
                   className="form-control m-2"
-                  value={collection.collectionTags}
+                  value={collection.collectionTags.join(', ')}
                   placeholder="tags"
-                  onChange={(e) => dispatch(setCollection({
-                    ...collection, collectionTags: e.target.value }))}
+                  onChange={(e) => {
+                    const tags = e.target.value.split(',').map(tag => tag.trim()); // Split string into array
+                    dispatch(setCollection({
+                      ...collection,
+                      collectionTags: tags
+                    }))
+                  }}
                 />
               </div>
               <div className="row m-2">

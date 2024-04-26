@@ -40,7 +40,7 @@ function Search() {
   const fetchUserCollections = async(uid?:string) => {
     const collections = await client.fetchCollectionsForUser(uid)
     console.log("fetched Collections", collections)
-    setUserOwnedCollections(collections);
+    setUserOwnedCollections(collections.collectionsOwned);
   }
 
   const fetchPublicCollections = async(type?:string) => {
@@ -72,8 +72,9 @@ function Search() {
 
   useEffect(() => {
     if (userId !== undefined) {
-      fetchPublicCollections("Public");
+      fetchUserCollections(userId);
     }
+    fetchPublicCollections("Public");
   }, []);
 
   return (
@@ -150,7 +151,7 @@ function Search() {
             {/* Display searched repositories in cards */}
             <div className="row">
             {searchGithubData.length > 0 ? (searchGithubData.map((repo: any) => (
-                <div className="col-md-4">
+                <div className="col-md-4 d-flex align-items-stretch">
                     <div className="card repo-card p-3 mb-2 bg-dark text-white" key={repo.gitId}>
                         <div className="d-flex justify-content-between">
                             <div className="d-flex flex-row align-items-center">

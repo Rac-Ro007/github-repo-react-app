@@ -2,8 +2,10 @@ import { Button, Col, Container, Row } from "react-bootstrap";
 import { FaBan, FaCloudDownloadAlt, FaGithub, FaGithubAlt, FaHeadphones, FaMusic } from "react-icons/fa";
 import './temp.css';
 import Footer from "../Footer";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Home() {
+    const navigate = useNavigate();
     return (
         <div style={{ "paddingTop": "250px" }}>
             <section className="hero-section text-center">
@@ -12,7 +14,7 @@ export default function Home() {
                         <Col>
                             <h1 className="display-4 text-white mb-4">Welcome to RepoC <FaGithub /></h1>
                             <p className="lead text-white mb-4">Unify the World's Code: Merge Millions of Git Repositories into One Comprehensive Collection</p>
-                            <Button variant="" style={{ "borderColor": "#2EA44F", "borderRadius": "50px", "color":"white" }} className="custom-button" size="lg" >Start Your Collection</Button>
+                            <button onClick={() => navigate(`/Search`)} style={{ "borderColor": "#2EA44F", "borderRadius": "50px", "color":"white" }} className="custom-button btn btn-lg" >Begin Your Search</button>
                         </Col>
                     </Row>
                 </Container>
