@@ -38,7 +38,7 @@ const Profile = () => {
         const collections = await client.fetchCollectionsForUser(uid)
         console.log("fetched Collections", collections)
         dispatch(setCollectionsOwned(collections.collectionsOwned))
-        dispatch(setCollectionsStarred(collections.collectionsStarred))
+        dispatch(setCollectionsStarred(collections.collectionsCollaborated))
         dispatch(setCollectionsSavedBy(collections.collectionsSavedBy))
         // setModuleList(modules)
     }
