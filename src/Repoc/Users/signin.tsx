@@ -25,7 +25,7 @@ export default function Signin() {
             const user_details = await client.signin(credentials);
             Swal.fire({
                 title: "Good job!",
-                text: "Collection Added Successfully!!",
+                text: "Login Successful!!",
                 confirmButtonText: "Dive In",
                 icon: "success"
             }).then((result) => {
@@ -36,7 +36,17 @@ export default function Signin() {
               });
             
         } catch (error) {
-            setErrorMessage("Check your Username/Password.");
+            Swal.fire({
+                title: "Oops!",
+                text: "Login UnSuccessful, Check your Credentials!!",
+                confirmButtonText: "Try Again",
+                icon: "error"
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    setErrorMessage("Check your Username/Password.");   
+                }
+              });
         }
     };
 

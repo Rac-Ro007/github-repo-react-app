@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './index.css';
 import { useNavigate } from 'react-router-dom';
 import * as client from "./client";
+import Swal from 'sweetalert2';
 
 export default function Signup() {
     const [error, setError] = useState("");
@@ -11,8 +12,18 @@ export default function Signup() {
     const signup = async () => {
         try {
             // Make sure user object is sent as the payload for signup
-            await client.signup(user);
-            navigate("/Search");
+            const user_details = await client.signup(user);
+            Swal.fire({
+                title: "Good job!",
+                text: "You have Signed Up Successfully!!",
+                confirmButtonText: "Dive In",
+                icon: "success"
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    navigate(`/Search/${user_details._id}`);
+                }
+              });
         } catch (err : any) {
             // Handle error response from the server
             setError(err.message); // Assuming err.message contains the error message from the server
@@ -43,7 +54,7 @@ export default function Signup() {
                     <input type="text" placeholder="Email Id" value={user.email} onChange={(e) => setUser({ ...user, email: e.target.value })} />
                 </div>
                 <div className="inputBx">
-                    <select value={user.userType} onChange={(e) => setUser({ ...user, userType: e.target.value })}>
+                    <select value={user.userType} className='form-select' onChange={(e) => setUser({ ...user, userType: e.target.value })}>
                         <option value="user">User</option>
                         <option value="creator">Creator</option>
                         <option value="admin">Admin</option>

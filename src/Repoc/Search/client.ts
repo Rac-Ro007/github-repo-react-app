@@ -13,6 +13,11 @@ export const fetchCollectionsForUser = async (userId?: string) => {
     return response.data;
 }
 
+export const fetchPublicCollections = async (type?: string) => {
+    const response = await axios.get(COLLECTIONS_API + `/type/${type}`);
+    return response.data;
+}
+
 export const getCollectionsForUser = async (id: any) => {
     const response = await axios.post(API_BASE + `/repoc/api/collections`, {userId: id});
     return response.data;

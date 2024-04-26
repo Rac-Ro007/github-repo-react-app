@@ -32,13 +32,21 @@ function Search() {
 
   const collectionsOwnedList = useSelector((state: RepocState) => 
         state.collectionsReducer.collectionsOwned);
+  
+  const [userOwnedCollections, setUserOwnedCollections] = useState([]);
 
   // console.log(searchGithubData);
 
   const fetchUserCollections = async(uid?:string) => {
     const collections = await client.fetchCollectionsForUser(uid)
     console.log("fetched Collections", collections)
-    dispatch(setCollectionsOwned(collections.collectionsOwned));
+    setUserOwnedCollections(collections);
+  }
+
+  const fetchPublicCollections = async(type?:string) => {
+    const collections = await client.fetchPublicCollections(type);
+    console.log("public Collections", collections)
+    dispatch(setCollectionsOwned(collections));
   }
 
   const handleAddToCollection = async () => {
@@ -64,7 +72,7 @@ function Search() {
 
   useEffect(() => {
     if (userId !== undefined) {
-      fetchUserCollections(userId);
+      fetchPublicCollections("Public");
     }
   }, []);
 
@@ -250,9 +258,10 @@ function Search() {
                 <select className="form-select m-2"
                 onChange={(e) => (setActiveCollectionId(e.target.value))}
                 >
-                  {collectionsOwnedList && collectionsOwnedList.map((collection)=> (
+                  {userOwnedCollections.length > 0 ? (userOwnedCollections.map((collection:any)=> (
                     <option value={collection._id}>{collection.collectionName}</option>
-                  ))}
+                  )))
+                :( <option value="">Add New Collection before Adding</option>)}
                 </select>
                 </div>
                 <div className="row m-2">
@@ -262,7 +271,7 @@ function Search() {
                 </button>
                 </div>
                 <div className="col-6">
-                <button className="btn btn-secondary w-100">
+                <button className="btn btn-secondary w-100" onClick={() => setShowModal(false)}>
                     Cancel
                 </button>
                 </div>

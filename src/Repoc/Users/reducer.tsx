@@ -8,7 +8,7 @@ const initialState:any = {
   collection: {   
     collectionName: "UI/UX Design Inspirations",
     collectionTags: ["ui/ux design", "user experience", "user interface"],
-    collectionType: "",
+    collectionType: "Public",
     githubRepos: [],
     ownerName: "",
     collaborators: [],
