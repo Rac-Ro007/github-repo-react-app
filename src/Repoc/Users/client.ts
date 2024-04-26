@@ -38,6 +38,10 @@ export interface User {
 
 export const signin = async (credentials: User) => { 
     const response = await axios.post(API_BASE + `/repoc/api/users/login`, credentials);
+    const setCookieHeader = response.headers['set-cookie'];
+    console.log("Set COkie", setCookieHeader)
+    console.log("Header", response.headers)
+    // return {"data": response.data, cookie: };
     return response.data;
 };
 

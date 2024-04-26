@@ -15,8 +15,6 @@ import Swal from 'sweetalert2'
 const Profile = () => {
     // State variables to manage user profile information
     const { userId } = useParams();
-    const [userName, setUserName] = useState('');
-    const [password, setPassword] = useState('');
     // Add more state variables as needed
     const [userDetails, setUserDetails] = useState({} as any);
 
