@@ -71,15 +71,15 @@ const Profile = () => {
         });
     };
 
-    const handleDeleteCollection = (collectionId: string, userId: string) => {
-        client.deleteCollection(collectionId, userId).then((collection:any) => {
-        dispatch(deleteCollection(collectionId));
-        });
-    }
+    // const handleDeleteCollection = (collectionId: string, userId: string) => {
+    //     client.deleteCollection(collectionId, userId).then((collection:any) => {
+    //     dispatch(deleteCollection(collectionId));
+    //     });
+    // }
 
     const handleUserUpdate = async () => {
-        const status = await client.updateUserDetails(collection);
-        dispatch(updateCollection(collection));
+        const user_data = await client.updateUserDetails(userId, userDetails);
+        setUserDetails(user_data);
     };
 
 
@@ -127,7 +127,7 @@ const Profile = () => {
                             <input type="email" className="form-control" id="email" value={userDetails.email} onChange={(e) => setUserDetails({ ...userDetails, email:e.target.value})} />
                         </div>
                         {/* Add more input fields for other profile information */}
-                        <button type="submit" className="btn btn-outline-dark">Update Details</button>
+                        <button type="submit" className="btn btn-outline-dark" onClick={handleUserUpdate}>Update Details</button>
                     </form>
                 </div>
                 {/* Right column for tabs */}
@@ -138,10 +138,10 @@ const Profile = () => {
                             <button className={`nav-link ${activeTab === 'Collections' ? 'active' : ''}`} onClick={() => setActiveTab('Collections')}>Collections</button>
                         </li>
                         <li className="nav-item">
-                            <button className={`nav-link ${activeTab === 'Starred' ? 'active' : ''}`} onClick={() => setActiveTab('Starred')}>Starred</button>
+                            <button className={`nav-link ${activeTab === 'Starred' ? 'active' : ''}`} onClick={() => setActiveTab('Starred')}>Shared with You</button>
                         </li>
                         <li className="nav-item">
-                            <button className={`nav-link ${activeTab === 'Tags' ? 'active' : ''}`} onClick={() => setActiveTab('Tags')}>Saved By</button>
+                            <button className={`nav-link ${activeTab === 'Tags' ? 'active' : ''}`} onClick={() => setActiveTab('Tags')}>Saved By You</button>
                         </li>
                     </ul>
                     {/* Render content based on active tab */}
@@ -169,7 +169,7 @@ const Profile = () => {
                                             <h4 className="heading">{repo.collectionName}</h4>
                                             {/* <p>Tags: {repo.collectionTags}</p> */}
                                             <div className="pt-1">
-                                                {collection.collectionTags && collection.collectionTags.map((coll:any) => (
+                                                {repo.collectionTags && repo.collectionTags.map((coll:any) => (
                                                     <button className="badge rounded-pill bg-dark" style={{marginRight:"3px", marginBottom:"3px"}}>{coll}</button>
                                                 ))}
                                             </div>
@@ -270,7 +270,7 @@ const Profile = () => {
                 aria-labelledby="contained-modal-title-vcenter"
                 centered>
                 <Modal.Header closeButton>
-                    <Modal.Title>Add / Update Collection</Modal.Title>
+                    <Modal.Title>Add New Collection</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="container align-items-center">
@@ -301,7 +301,7 @@ const Profile = () => {
                     </div>
                     <div className="col-6">
                     <button className="btn btn-primary w-100">
-                        Update
+                        Cancel
                     </button>
                     </div>
                     </div>

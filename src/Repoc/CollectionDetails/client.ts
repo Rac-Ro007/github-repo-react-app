@@ -28,7 +28,7 @@ export const createCollection = async (userId:any, collection:any) => {
 };
 
 export const deleteCollection = async (collectionId:any, userId: any) => {
-    const response = await axios.delete(`${COLLECTIONS_API}/${collectionId}/savedBy/${userId}`);
+    const response = await axios.delete(`${COLLECTIONS_API}/${collectionId}`);
     return response.data;
 };
 

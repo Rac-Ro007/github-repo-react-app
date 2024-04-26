@@ -70,7 +70,10 @@ function Search() {
 
   return (
     <div className="p-4 w-100 text-center">
-      <h2 className="pt-2">Search what you are Looking For</h2>
+      <div className="d-flex justify-content-between">
+        <h3 className="pt-2">Search what you are Looking For</h3>
+        <Link to={`/Profile/${userId}`} className="btn btn-dark">Profile</Link>
+      </div>
       {/* Search Section */}
       <div className="mb-4 p-4 pb-3">
         <div className="row">
@@ -196,8 +199,9 @@ function Search() {
         <div className="container p-4">
             {/* Display searched repositories in cards */}
             <div className="row">
-              {collectionsOwnedList.length > 0 ? (collectionsOwnedList.map((repo:any) => (
+            {collectionsOwnedList.length > 0 ? (collectionsOwnedList.map((repo:any) => (
               <div className="col-md-3 mb-2">
+                  <Link to={`/${userId}/CollectionDetails/${repo._id}`} style={{textDecoration:"none"}}>
                   <div className="card repo-card p-3 mb-2" key={repo.id}>
                       <div className="d-flex justify-content-between">
                           <div className="d-flex flex-row align-items-center">
@@ -210,15 +214,21 @@ function Search() {
                       </div>
                       <div className="mt-3">
                           <h4 className="heading">{repo.collectionName}</h4>
-                          <p>Tags: {repo.collectionTags.join(', ')}</p>
+                          {/* <p>Tags: {repo.collectionTags}</p> */}
+                          <div className="pt-1">
+                              {repo.collectionTags && repo.collectionTags.map((coll:any) => (
+                                  <button className="badge rounded-pill bg-dark" style={{marginRight:"3px", marginBottom:"3px"}}>{coll}</button>
+                              ))}
+                          </div>
                       </div>
                   </div>
+                  </Link>
               </div>
               ))): 
               (
                   <div className="container text-center m-4">
-                      <SiTurborepo color="grey" size={50}/>
-                      <h5 className="text-secondary pt-4">You dont have any collection</h5>
+                      <ImGithub color="black" size={20}/>
+                      <h5>You dont have any collection</h5>
                   </div>
               )
           } 

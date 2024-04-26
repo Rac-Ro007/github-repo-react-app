@@ -9,7 +9,7 @@ export const fetchCollectionsForUser = async (userId?: string) => {
 }
 
 export const fetchUserDetails = async (userId?: string) => {
-    const response = await axios.post(API_BASE + `/repoc/api/users/${userId}`);
+    const response = await axios.get(API_BASE + `/repoc/api/users/${userId}`);
     return response.data;
 }
 
@@ -26,8 +26,8 @@ export const deleteCollection = async (collectionId:any, userId: any) => {
     return response.data;
 };
 
-export const updateUserDetails = async (userId:any) => {
-    const response = await axios.put(API_BASE + `/repoc/api/users/${userId}`,);
+export const updateUserDetails = async (userId:any, userDetails:any) => {
+    const response = await axios.put(API_BASE + `/repoc/api/users/${userId}`, userDetails);
     return response.data;
 };
 

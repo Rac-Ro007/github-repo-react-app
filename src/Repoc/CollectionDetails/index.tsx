@@ -10,7 +10,7 @@ import { RiGitForkFill } from "react-icons/ri";
 import { IoPeopleSharp } from "react-icons/io5";
 import { RepocState } from "../../store";
 import { useParams } from "react-router";
-import { RiExternalLinkFill } from "react-icons/ri";
+import { useNavigate } from "react-router-dom";
 import {
   deleteCollection,
   updateCollection,
@@ -21,36 +21,22 @@ import { GoLinkExternal } from "react-icons/go";
 const CollectionDetails = () => {
   // State variables to manage user profile information
   const { userId, collectionId } = useParams();
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  // Add more state variables as needed
   const [gitRepoList, setgitRepos] = useState<any>([]);
 
   const [activeTab, setActiveTab] = useState("Collections");
   const [showModal, setShowModal] = useState(false);
+  const [deleteModal, setDeleteModal] = useState(false);
 
-  // const collectionsOwnedList = useSelector((state: RepocState) =>
-  //     state.collectionsReducer.collectionsOwned);
-  // const collectionsStarredList = useSelector((state: RepocState) =>
-  //     state.collectionsReducer.collectionsStarred);
-  // const collectionsSavedByList = useSelector((state: RepocState) =>
-  //     state.collectionsReducer.collectionsSavedBy);
+  const navigate = useNavigate();
+
   const collection = useSelector(
     (state: RepocState) => state.collectionsReducer.collection
   );
   const dispatch = useDispatch();
 
-  // const fetchUserCollectionByIDfetchUserCollections = async(uid?:string) => {
-  //     const collections = await client.fetchCollectionsForUser(uid)
-  //     console.log("fetched Collections", collections)
-  //     dispatch(setCollectionsOwned(collections.collectionsOwned))
-  //     dispatch(setCollectionsStarred(collections.collectionsStarred))
-  //     dispatch(setCollectionsSavedBy(collections.collectionsSavedBy))
-  //     console.log(collections.collectionsOwned[0])
-  //     dispatch(setCollection(collections.collectionsOwned[0]));
-  // }
 
   const fetchUserCollectionByID = async (collectionId?: string) => {
+    setgitRepos([]);
     const collection = await client.fetchCollectionsByID(collectionId);
     console.log("fetched Collection: ", collection);
     console.log(collection.githubRepos);
@@ -82,15 +68,17 @@ const CollectionDetails = () => {
     // fetchModules(cid);
   };
 
-  const handleDeleteCollection = (collectionId: string, userId: string) => {
-    client.deleteCollection(collectionId, userId).then((collection: any) => {
-      dispatch(deleteCollection(collectionId));
+  const handleDeleteCollection = () => {
+    client.deleteCollection(collection._id, userId).then((collection: any) => {
+      dispatch(deleteCollection(collection._id));
+      navigate(`/Profile/${userId}`);
     });
   };
 
   const handleUpdateCollection = async () => {
-    const status = await client.updateCollection(collection);
-    dispatch(updateCollection(collection));
+    const updated_collection = await client.updateCollection(collection);
+    dispatch(updateCollection(updated_collection));
+    setShowModal(false);
   };
 
   // Function to handle form submission for updating user profile
@@ -101,13 +89,20 @@ const CollectionDetails = () => {
 
   return (
     <div className="container mt-5">
-      <h3>Collection Details</h3>
-      {collection.owner === userId && (
-        <button className="btn btn-outline-warning m-2">Edit Collection</button>
-      )}
-      {collection.owner === userId && (
-        <button className="btn btn-outline-danger m-2">Delete Collection</button>
-      )}
+        <div className="d-flex justify-content-between">
+            <h3>Collection Details</h3>
+            <div className="justify-content-end">
+            {collection.owner === userId && (
+                <button className="btn btn-info m-2" onClick={() => setShowModal(true)}>Share Collection</button>
+            )}
+            {collection.owner === userId && (
+                <button className="btn btn-warning m-2" onClick={() => setShowModal(true)}>Edit Collection</button>
+            )}
+            {collection.owner === userId && (
+                <button className="btn btn-outline-danger m-2" onClick={() => setDeleteModal(true)}>Delete Collection</button>
+            )}
+        </div>
+      </div>
       <hr style={{ width: "25%" }} />
       <div className="row pt-1">
         {/* Left column for updating user profile */}
@@ -133,6 +128,11 @@ const CollectionDetails = () => {
                   {coll}
                 </button>
               ))}
+          </div>
+          <div className="pt-3">
+            {collection.owner !== userId && (
+                <button className="btn btn-outline-dark m-2">Save</button>
+            )}
           </div>
         </div>
         {/* Right column for tabs */}
@@ -243,7 +243,7 @@ const CollectionDetails = () => {
                 <div className="container text-center m-4">
                   <ImGithub color="grey" size={50} />
                   <h4 className="pt-4 text-secondary">
-                    Search for Something ;D ...{" "}
+                    Add Some Git Repositories ;D ...{" "}
                   </h4>
                 </div>
               )}
@@ -251,7 +251,7 @@ const CollectionDetails = () => {
           </div>
         </div>
       </div>
-      {/* Delete Modal */}
+      {/* Updation Modal */}
       {showModal && (
         <Modal
           show={showModal}
@@ -262,38 +262,84 @@ const CollectionDetails = () => {
           centered
         >
           <Modal.Header closeButton>
-            <Modal.Title>Add / Update Collection</Modal.Title>
+            <Modal.Title>Update Collection</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <div className="container align-items-center">
               <div className="p-2">
                 <input
                   className="form-control m-2"
-                  value=""
-                  placeholder="Enter Module Name"
-                  // onChange={(e) => dispatch(setModule({
-                  // ...module, name: e.target.value }))}
+                  value={collection.collectionName}
+                  placeholder=""
+                  onChange={(e) => dispatch(setCollection({
+                  ...collection, collectionName: e.target.value }))}
                 />
-                <textarea
+                <select className="form-select m-2"
+                    onChange={(e) => dispatch(setCollection({ 
+                        ...collection, collectionType: e.target.value }))}
+                    >
+                        <option value="Public">Public</option>
+                        <option value="Private">Private</option>
+                    </select>
+                <input
                   className="form-control m-2"
-                  value=""
-                  placeholder="Enter Module Description"
-                  // onChange={(e) => dispatch(setModule({
-                  // ...module, description: e.target.value }))}
+                  value={collection.collectionTags}
+                  placeholder="tags"
+                  onChange={(e) => dispatch(setCollection({
+                    ...collection, collectionTags: e.target.value }))}
                 />
               </div>
               <div className="row m-2">
                 <div className="col-6">
-                  <button className="btn btn-success w-100">Add Module</button>
+                  <button className="btn btn-secondary w-100" onClick={() => {setShowModal(false)}}>Cancel</button>
                 </div>
                 <div className="col-6">
-                  <button className="btn btn-primary w-100">Update</button>
+                  <button className="btn btn-outline-dark w-100" onClick={() => {handleUpdateCollection()}}>Update Collection</button>
                 </div>
               </div>
             </div>
           </Modal.Body>
         </Modal>
       )}
+
+      {/* Delete Modal */}
+      {deleteModal && (
+          <Modal 
+          show={deleteModal}
+          backdrop="static"
+          onHide={()=> {setDeleteModal(false);}}
+          aria-labelledby="contained-modal-title-vcenter"
+          centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Delete Collection?</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="container align-items-center">
+              <h5>Are you sure you want to delete the Collection?</h5>
+              <h5 style={{color:"red"}}>{collection._id} | {collection.collectionName}</h5>
+              <hr/>
+              <div className="d-flex justify-content-around m-2">
+                <button className="btn btn-secondary m-2 w-100" onClick={() => setDeleteModal(false)}>
+                  Cancel
+                </button>
+                <button className="btn btn-outline-danger m-2 w-100" onClick={handleDeleteCollection}>
+                  Delete 
+                </button>
+              </div>
+            </div>
+          </Modal.Body>
+          {/* <Modal.Footer>
+            <div className="d-flex justify-content-around">
+              <button className="btn btn-secondary w-100" onClick={() => setDeleteModal(false)}>
+                Cancel
+              </button>
+              <button className="btn btn-danger w-100" onClick={handleDelete}>
+                Delete 
+              </button>
+            </div>
+          </Modal.Footer> */}
+        </Modal>
+        )}
     </div>
   );
 };

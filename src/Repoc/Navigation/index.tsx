@@ -21,7 +21,7 @@ function GithubNavigation() {
   console.log(userId)
   // Function to determine if the pathname matches the specified formats
   const isProfilePage = /^\/Profile\//.test(location.pathname);
-  const isCollectionDetailsPage = /^\/CollectionDetails\//.test(location.pathname);
+  const isCollectionDetailsPage = /\/CollectionDetails\//.test(location.pathname);
   const isSearchPage = /^\/Search\//.test(location.pathname);
 
   const isLandingPage = pathname === "/Home" || location.pathname === "/AboutUs" || location.pathname.startsWith("/Users");
@@ -36,7 +36,7 @@ function GithubNavigation() {
             </div>
           </Link>
           
-          <div className="flex-grow-1 d-flex justify-content-center">
+          {/* <div className="flex-grow-1 d-flex justify-content-center">
             <div className="input-group">
               <input
                 type="text"
@@ -47,7 +47,7 @@ function GithubNavigation() {
                 <i className="bi bi-search"></i>
               </button>
             </div>
-          </div>
+          </div> */}
           <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
@@ -58,9 +58,9 @@ function GithubNavigation() {
               </li>
               {isProfilePage || isCollectionDetailsPage || isSearchPage ? (
                 <>
-                  <li className="nav-item">
+                  {/* <li className="nav-item">
                     <Link to={`/Profile/${userId}`} className="nav-link">Profile</Link>
-                  </li>
+                  </li> */}
                   <li className="nav-item">
                     <button className="nav-link" >Sign Out</button>
                   </li>
