@@ -142,6 +142,9 @@ const Profile = () => {
                         </div>
                         {/* Add more input fields for other profile information */}
                         <button type="submit" className="btn btn-outline-dark" onClick={handleUserUpdate}>Update Details</button>
+                        {userDetails.userType === "admin" && (
+                            <Link to={`/Admin/${userId}`} className="btn btn-dark m-2">Admin Profile</Link>
+                        )}
                     </form>
                 </div>
                 {/* Right column for tabs */}

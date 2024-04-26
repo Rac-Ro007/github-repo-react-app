@@ -23,6 +23,7 @@ export default function Signin() {
     const signin = async () => {
         try {
             const user_details = await client.signin(credentials);
+            if (user_details?.userType === "admin" ) {
             Swal.fire({
                 title: "Good job!",
                 text: "Login Successful!!",
@@ -31,9 +32,23 @@ export default function Signin() {
             }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed) {
-                    navigate(`/Search/${user_details._id}`);
+                    navigate(`/Admin/${user_details._id}`);
                 }
               });
+            }
+            else {
+                Swal.fire({
+                    title: "Good job!",
+                    text: "Login Successful!!",
+                    confirmButtonText: "Dive In",
+                    icon: "success"
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        navigate(`/Search/${user_details._id}`);
+                    }
+                  });
+            }
             
         } catch (error) {
             Swal.fire({

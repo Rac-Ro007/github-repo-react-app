@@ -17,6 +17,7 @@ import {
   setCollection,
 } from "../Users/reducer";
 import { GoLinkExternal } from "react-icons/go";
+import Swal from "sweetalert2";
 
 const CollectionDetails = () => {
   // State variables to manage user profile information
@@ -79,12 +80,6 @@ const CollectionDetails = () => {
 
   const clearCollection = () => dispatch(setCollection([]));
 
-  const handleCreate = () => {
-    setShowModal(false);
-    clearCollection();
-    // fetchModules(cid);
-  };
-
   const handleDeleteCollection = () => {
     client.deleteCollection(collection._id, userId).then((collection: any) => {
       dispatch(deleteCollection(collection._id));
@@ -108,7 +103,22 @@ const CollectionDetails = () => {
     console.log("Client collectinId: ", collectionId);
     console.log("Client userId: ", userId);
     const updated_collection = await client.addSavedByUser(collectionId, userId);
-    dispatch(setCollection(updated_collection));
+    dispatch(setCollection(updated_collection)); 
+    if(updated_collection) {
+      Swal.fire({
+          title: "Good job!",
+          text: "Collection Saved Successfully!!",
+          icon: "success"
+      });
+    }
+    else {
+        Swal.fire({
+            title: "Oops!",
+            text: "Something went wrong, Try Again!",
+            icon: "error"
+        });
+    }
+    navigate(`/Profile/${userId}`);
   }
 
   // Function to handle form submission for updating user profile
@@ -183,9 +193,9 @@ const CollectionDetails = () => {
             <div className="row">
               {gitRepoList.length > 0 ? (
                 gitRepoList.map((repo: any) => (
-                  <div className="col-md-4 d-flex align-items-stretch">
+                  <div className="col-md-4 d-flex align-items-stretch flex-wrap">
                     <div
-                      className="card repo-card p-3 mb-2 bg-dark text-white"
+                      className="card repo-card p-3 mb-2 bg-dark text-white w-100"
                       key={repo.gitId}
                     >
                       <div className="d-flex justify-content-between">

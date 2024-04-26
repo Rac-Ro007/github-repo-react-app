@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Modal from 'react-bootstrap/Modal';
 import { FaStar } from "react-icons/fa6";
 import { RepocState } from "../../store";
@@ -14,6 +14,7 @@ import * as client from "./client";
 import { useParams } from "react-router";
 import { setSearchGithubData } from "./reducer";
 import { setCollectionsOwned } from "../Users/reducer";
+import Swal from "sweetalert2";
 
 function Search() {
   // Modal config
@@ -26,6 +27,7 @@ function Search() {
   const [tag, setTag] = useState("");
   const [repository, setRepository] = useState("");
   const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
 
   const searchGithubData = useSelector((state: RepocState) => 
         state.searchGithubReducer.searchGithubData);
@@ -81,8 +83,11 @@ function Search() {
     <div className="p-4 w-100 text-center">
       <div className="d-flex justify-content-between">
         <h3 className="pt-2">Search what you are Looking For</h3>
-        <Link to={`/Profile/${userId}`} className="btn btn-dark">Profile</Link>
-        <Link to={`/Admin`} className="btn btn-dark">Admin Profile</Link>
+        <div>
+          {userId && (
+            <Link to={`/Profile/${userId}`} className="btn btn-dark">Profile</Link>
+          )}
+        </div>
       </div>
       {/* Search Section */}
       <div className="mb-4 p-4 pb-3">
@@ -151,8 +156,8 @@ function Search() {
             {/* Display searched repositories in cards */}
             <div className="row">
             {searchGithubData.length > 0 ? (searchGithubData.map((repo: any) => (
-                <div className="col-md-4 d-flex align-items-stretch">
-                    <div className="card repo-card p-3 mb-2 bg-dark text-white" key={repo.gitId}>
+                <div className="col-md-4 d-flex align-items-stretch flex-wrap">
+                    <div className="card repo-card p-3 mb-2 bg-dark text-white w-100" key={repo.gitId}>
                         <div className="d-flex justify-content-between">
                             <div className="d-flex flex-row align-items-center">
                                 <div className="icon"> <ImGithub color="black"/> </div>
@@ -172,7 +177,25 @@ function Search() {
                                 <div className="mt-3"> <span className="text1">Topics:  <span className="text2">{repo.topics.join(', ')}</span></span> </div>
                             </div>
                             <div className="d-flex justify-content-between">
-                              <a className="btn btn-dark" onClick={() => {setActiveRepo(repo); setShowModal(true)}}><MdOutlinePlaylistAdd size={30}/></a>
+                              <a className="btn btn-dark" onClick={() => {
+                                if(userId !== undefined) {
+                                  setActiveRepo(repo); 
+                                  setShowModal(true)
+                                }
+                                else {
+                                  Swal.fire({
+                                    title: "You need an account",
+                                    text: "Considering Signing In",
+                                    confirmButtonText: "Let's Go",
+                                    icon: "info"
+                                }).then((result) => {
+                                    /* Read more about isConfirmed, isDenied below */
+                                    if (result.isConfirmed) {
+                                        navigate(`/Users/SignIn/`);
+                                    }
+                                  });
+                                }
+                                }}><MdOutlinePlaylistAdd size={30}/></a>
                               <div className="ms-auto" style={{ alignSelf: "center" }}>
                                 <span className="float-end">
                                   <a style={{cursor:"pointer"}} ><FaStar className="color-warning ms-2" size={20} /> {repo.stargazerCount}</a>

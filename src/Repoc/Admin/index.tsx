@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { deleteUser, getAllUsers, getAllCollections, deleteCollection } from "./client";
 import { ImGithub } from "react-icons/im";
+import { Link, useParams } from "react-router-dom";
 
 export default function Admin() {
+  const { adminId } = useParams();
+
   const [users, setUsers] = useState<any>([]);
   const [collections, setCollections] = useState<any>([]);
   const [activeTab, setActiveTab] = useState("Users");
@@ -49,11 +52,12 @@ export default function Admin() {
   };
 
   return (
-    <div className="row">
-        <div className="col-md-6 p-3">
-                <h2>Admin Dashboard</h2>
+    <div className="container">
+        <div className="p-3 d-flex justify-content-between">
+          <h3>Admin Dashboard</h3>
+          <Link className="btn btn-dark" to={`/Search/${adminId}`}>Search RepoC</Link>
         </div>
-      <div className="col p-3">
+      <div className="p-3">
         {/* <h2>Tabs</h2> */}
         <ul className="nav nav-tabs">
           <li className="nav-item">
@@ -132,7 +136,7 @@ export default function Admin() {
           </div>
         )}
 
-{activeTab === "Collections" && (
+        {activeTab === "Collections" && (
           <div className="container pt-2">
             <div className="d-flex justify-content-between pb-2">
               <h3>Collections</h3>

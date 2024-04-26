@@ -11,17 +11,18 @@ interface NavbarDropdownProps {
   isProfilePage: boolean;
   isCollectionDetailsPage: boolean;
   isSearchPage: boolean;
+  isAdminPage: boolean;
 }
 
 
-function NavbarDropdown({ isOpen, isProfilePage, isCollectionDetailsPage, isSearchPage }: NavbarDropdownProps) {
+function NavbarDropdown({ isOpen, isProfilePage, isCollectionDetailsPage, isSearchPage, isAdminPage }: NavbarDropdownProps) {
   return (
     <div className={`collapse navbar-collapse justify-content-end ${isOpen ? 'show' : ''}`} id="navbarNav">
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
           <Link to='/AboutUs' className="nav-link" >About Us</Link>
         </li>
-        {isProfilePage || isCollectionDetailsPage || isSearchPage ? (
+        {isProfilePage || isCollectionDetailsPage || isSearchPage || isAdminPage ? (
           <>
             <li className="nav-item">
               <Link to='/Users/Signin' className="nav-link" >Sign Out</Link>
@@ -63,6 +64,7 @@ function GithubNavigation() {
   const isProfilePage = /^\/Profile\//.test(location.pathname);
   const isCollectionDetailsPage = /\/CollectionDetails\//.test(location.pathname);
   const isSearchPage = /^\/Search\//.test(location.pathname);
+  const isAdminPage = /^\/Admin/.test(location.pathname);
 
   const isLandingPage = pathname === "/Home" || location.pathname === "/AboutUs" || location.pathname.startsWith("/Users");
 
@@ -80,7 +82,7 @@ function GithubNavigation() {
           <button className="navbar-toggler justify-content-end" type="button" onClick={toggleDropdown} aria-controls="navbarNav" aria-expanded={isOpen ? "true" : "false"} aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
-          <NavbarDropdown isOpen={isOpen} isProfilePage={isProfilePage} isCollectionDetailsPage={isCollectionDetailsPage} isSearchPage={isSearchPage} />
+          <NavbarDropdown isOpen={isOpen} isProfilePage={isProfilePage} isCollectionDetailsPage={isCollectionDetailsPage} isSearchPage={isSearchPage} isAdminPage={isAdminPage} />
 
         </div>
       </nav>
