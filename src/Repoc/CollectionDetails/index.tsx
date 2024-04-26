@@ -24,8 +24,11 @@ const CollectionDetails = () => {
   const [gitRepoList, setgitRepos] = useState<any>([]);
 
   const [activeTab, setActiveTab] = useState("Collections");
+  const [shareModal, setShareModal] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [deleteModal, setDeleteModal] = useState(false);
+  const [sharedUser, setSharedUser] = useState("");
+  const [userList, setUserList] = useState<any>([]);
 
   const navigate = useNavigate();
 
@@ -40,14 +43,27 @@ const CollectionDetails = () => {
     const collection = await client.fetchCollectionsByID(collectionId);
     console.log("fetched Collection: ", collection);
     console.log(collection.githubRepos);
-    collection.githubRepos &&
-      collection.githubRepos.map(async (repo: any) => {
-        const currRepo = await client.fetchRepoById(repo);
-        console.log("Current Repo:", currRepo);
-        setgitRepos([...gitRepoList, currRepo]);
-      });
+    
+    if (collection.githubRepos) {
+      // Map each repo to a promise that fetches the repo data
+      const repoPromises = collection.githubRepos.map((repo:any) => client.fetchRepoById(repo));
+      
+      // Wait for all repo data to be fetched
+      const repos = await Promise.all(repoPromises);
+      
+      // Update state with all fetched repositories
+      setgitRepos(repos);
+    }
+    
     dispatch(setCollection(collection));
   };
+
+  const fetchUserList = async () => {
+    const users = await client.fetchAllUsers();
+    const usersExceptSelf = users.filter((u:any) => u._id !== userId);
+    setUserList(usersExceptSelf);
+  }
+  
 
   // const handleAddCollection = () => {
   //     client.createCollection(userId, collection).then((collection:any) => {
@@ -58,6 +74,7 @@ const CollectionDetails = () => {
 
   useEffect(() => {
     fetchUserCollectionByID(collectionId);
+    fetchUserList();
   }, []);
 
   const clearCollection = () => dispatch(setCollection([]));
@@ -81,6 +98,19 @@ const CollectionDetails = () => {
     setShowModal(false);
   };
 
+  const handleAddSharedUser = async () => {
+    const updated_collection = await client.addSharedUser(collectionId, sharedUser);
+    dispatch(setCollection(updated_collection));
+    setShareModal(false);
+  };
+
+  const handleSaveCollection = async() => {
+    console.log("Client collectinId: ", collectionId);
+    console.log("Client userId: ", userId);
+    const updated_collection = await client.addSavedByUser(collectionId, userId);
+    dispatch(setCollection(updated_collection));
+  }
+
   // Function to handle form submission for updating user profile
   const handleSubmit = (event: any) => {
     event.preventDefault();
@@ -92,8 +122,8 @@ const CollectionDetails = () => {
         <div className="d-flex justify-content-between">
             <h3>Collection Details</h3>
             <div className="justify-content-end">
-            {collection.owner === userId && (
-                <button className="btn btn-info m-2" onClick={() => setShowModal(true)}>Share Collection</button>
+            {collection.owner === userId && collection.collectionType === "Public" && (
+                <button className="btn btn-info m-2" onClick={() => setShareModal(true)}>Share Collection</button>
             )}
             {collection.owner === userId && (
                 <button className="btn btn-warning m-2" onClick={() => setShowModal(true)}>Edit Collection</button>
@@ -115,6 +145,9 @@ const CollectionDetails = () => {
             <h4>Collaborators: {collection.collaborators.length}</h4>
           </div>
           <div className="pt-3">
+            <h4>Saved By: {collection.savedBy.length}</h4>
+          </div>
+          <div className="pt-3">
             <h4>Owner:{collection.ownerName} </h4>
           </div>
           <div className="pt-3">
@@ -131,7 +164,8 @@ const CollectionDetails = () => {
           </div>
           <div className="pt-3">
             {collection.owner !== userId && (
-                <button className="btn btn-outline-dark m-2">Save</button>
+                <button className="btn btn-outline-dark m-2"
+                onClick={()=>handleSaveCollection()}>Save</button>
             )}
           </div>
         </div>
@@ -251,6 +285,45 @@ const CollectionDetails = () => {
           </div>
         </div>
       </div>
+
+      {/* Share Modal */}
+      {shareModal && (
+        <Modal
+          show={shareModal}
+          onHide={() => {
+            setShareModal(false);
+          }}
+          aria-labelledby="contained-modal-title-vcenter"
+          centered
+        >
+          <Modal.Header closeButton>
+            <Modal.Title>Share Collection</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <div className="container align-items-center">
+              <div className="p-2">
+                
+                <select className="form-select m-2"
+                    onChange={(e) => setSharedUser(e.target.value)}
+                    >
+                        {userList && userList.map((user: any) => (
+                        <option value={user._id}>{user.username}</option>
+                      ))}
+                    </select>
+              </div>
+              <div className="row m-2">
+                <div className="col-6">
+                  <button className="btn btn-secondary w-100" onClick={() => {setShareModal(false)}}>Cancel</button>
+                </div>
+                <div className="col-6">
+                  <button className="btn btn-outline-dark w-100" onClick={() => {handleAddSharedUser()}}>Add as Collaborator</button>
+                </div>
+              </div>
+            </div>
+          </Modal.Body>
+        </Modal>
+      )}
+
       {/* Updation Modal */}
       {showModal && (
         <Modal
