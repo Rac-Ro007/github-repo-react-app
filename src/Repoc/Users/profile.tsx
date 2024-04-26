@@ -7,7 +7,7 @@ import axios from "axios";
 import * as client from './client';
 import { RepocState } from "../../store";
 import { useParams } from "react-router";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { addCollection, deleteCollection, setCollectionsOwned, setCollectionsSavedBy, setCollectionsStarred, 
          updateCollection, setCollection } from "./reducer";
 import Swal from 'sweetalert2'
@@ -118,6 +118,7 @@ const Profile = () => {
         // fetchModules(cid);
       };
 
+    const navigate = useNavigate();
     return (
         <div className="container mt-5">
             <div className="row">
@@ -168,6 +169,7 @@ const Profile = () => {
                             <div className="d-flex justify-content-between pb-2">
                                 <h3>Your Collections</h3>
                                 <button className="btn btn-dark" onClick={() => {dispatch(setCollection([])); setShowModal(true)}}>New Collection</button>
+                                <button onClick={() => navigate(`/Search/${userId}`)} className="btn btn-outline-dark" >Start Searching</button>
                             </div>
                             <div className="row text-center">
                                 {collectionsOwnedList.length > 0 ? (collectionsOwnedList.map((repo:any) => (
