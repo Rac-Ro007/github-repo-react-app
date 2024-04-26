@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 
 export default function Signup() {
     const [error, setError] = useState("");
-    const [user, setUser] = useState({ firstname: "", email: "", username: "", password: "", userType: "user" }); // Set default userType to "user"
+    const [user, setUser] = useState({ name: "", email: "", username: "", password: "", userType: "user" }); // Set default userType to "user"
     const navigate = useNavigate();
 
     const signup = async () => {
@@ -40,7 +40,7 @@ export default function Signup() {
                 {error && <p style={{ color: 'red' }}>{error}</p>} {/* Display error message if present */}
                 
                 <div className="inputBx">
-                    <input type="text" placeholder="FirstName" value={user.firstname} onChange={(e) => setUser({ ...user, firstname: e.target.value })} />
+                    <input type="text" placeholder="FirstName" value={user.name} onChange={(e) => setUser({ ...user, name: e.target.value })} />
                 </div>
 
                 <div className="inputBx">
