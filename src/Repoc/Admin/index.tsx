@@ -1,18 +1,13 @@
 import { useEffect, useState } from "react";
-import { deleteUser, getAllUsers } from "./client";
-
-
-interface User {
-    userId: string;
-    username: string;
-    email: string;
-    // Add more properties as needed
-}
+import { User, deleteUser, getAllUsers } from "./client";
 
 
 export default function Admin() {
     const [users, setUsers] = useState<User[]>([]);
-
+    const [user, setUser] = useState<User>({
+        _id: "", username: "", password: "", firstName: "",
+        lastName: "", role: "USER"
+    });
     // Fetch all users when the component mounts
     useEffect(() => {
         const fetchUsers = async () => {
@@ -31,7 +26,7 @@ export default function Admin() {
         try {
             await deleteUser(userId);
             // Remove the deleted user from the users array
-            setUsers(users.filter(user => user.userId !== userId));
+            setUsers(users.filter(user => user._id !== userId));
         } catch (error) {
             console.error('Error deleting user:', error);
         }
@@ -51,17 +46,14 @@ export default function Admin() {
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map(user => (
-                        <tr key={user.userId}>
-                            <td>{user.username}</td>
-                            <td>{user.email}</td>
-                            {/* Add more cells for other user attributes */}
-                            <td>
-                                <button onClick={() => handleDeleteUser(user.userId)}>Delete</button>
-                                {/* Add edit button with a link to edit user page */}
-                                {/* <Link to={`/users/${user.userId}/edit`}>Edit</Link> */}
-                            </td>
-                        </tr>
+                    {users.map((user : any) => (
+                    <tr key={user._id}>
+                        <td>{user.username}</td>
+                        <td>{user.email}</td>
+                        <td>
+                            <button onClick={() => handleDeleteUser(user._id)}>Delete</button>
+                        </td>
+                    </tr>
                     ))}
                 </tbody>
             </table>

@@ -2,6 +2,12 @@ import axios from "axios";
 
 const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:4000";
 
+
+export interface User {
+    _id: string; username: string; password: string; role: string;
+    firstName: string, lastName: string
+};
+
 export const getAllUsers = async () => {
     const response = await axios.get(API_BASE + `/repoc/api/users`);
     return response.data;
