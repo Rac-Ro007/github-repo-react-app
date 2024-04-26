@@ -126,7 +126,6 @@ const CollectionDetails = () => {
     event.preventDefault();
     // Logic to update user profile
   };
-
   return (
     <div className="container mt-5">
         <div className="d-flex justify-content-between">
@@ -136,10 +135,14 @@ const CollectionDetails = () => {
                 <button className="btn btn-info m-2" onClick={() => setShareModal(true)}>Share Collection</button>
             )}
             {collection.owner === userId && (
+              <button onClick={() => navigate(`/Search/${userId}`)} className="btn btn-outline-dark" >Start Searching</button>
+            )}
+            {collection.owner === userId && (
                 <button className="btn btn-warning m-2" onClick={() => setShowModal(true)}>Edit Collection</button>
             )}
             {collection.owner === userId && (
                 <button className="btn btn-outline-danger m-2" onClick={() => setDeleteModal(true)}>Delete Collection</button>
+
             )}
         </div>
       </div>
