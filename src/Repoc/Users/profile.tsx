@@ -61,14 +61,15 @@ const Profile = () => {
                 icon: "success"
             });
         }
-        else {
+        })
+        .catch((error) => {
+            console.error("Error adding collection:", error);
             Swal.fire({
                 title: "Oops!",
-                text: "Something went wrong, Try Again!",
+                text: "You are not allowed to create Public Collection. \n" + error,
                 icon: "error"
             });
-        }
-        });
+        })
     };
 
     // const handleDeleteCollection = (collectionId: string, userId: string) => {

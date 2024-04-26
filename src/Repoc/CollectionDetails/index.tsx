@@ -158,10 +158,10 @@ const CollectionDetails = () => {
             <h4>Collaborators: {collection.collaborators?.length}</h4>
           </div>
           <div className="pt-3">
-            <h4>Saved By: {collection.savedBy.length}</h4>
+            <h4>Saved By: {collection.savedBy?.length}</h4>
           </div>
           <div className="pt-3">
-            <h4>Owner:{collection.ownerName} </h4>
+            <h4>Owner:{collection?.ownerName} </h4>
           </div>
           <div className="pt-3">
             <h4>Tags:</h4>
