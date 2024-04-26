@@ -15,10 +15,9 @@ export default function AboutUs() {
                             </div>
                             <div className="profile-content" style={{ marginTop: "140px" }}>
                                 <div style={{ "color": "white" }} className="profile-name">Rajiv Shah</div>
-                                <div style={{ "color": "white" }} className="profile-username">@johndoesurname</div>
                                 <div className="profile-icons">
-                                    <a href="#"><i style={{ "fontSize": "25px", "color": "blue", "marginRight": "15px" }}><FaLinkedin /></i></a>
-                                    <a href="#"><i style={{ "fontSize": "25px", "color": "green" }}><FaGithub /></i></a>
+                                    <a href="https://www.linkedin.com/in/rajiv-shah17/" target="_blank"><i style={{ "fontSize": "25px", "color": "blue", "marginRight": "15px" }}><FaLinkedin /></i></a>
+                                    <a href="https://github.com/RajivShah1798" target="_blank"><i style={{ "fontSize": "25px", "color": "green" }}><FaGithub /></i></a>
                                 </div>
                             </div>
                         </div>
@@ -30,10 +29,9 @@ export default function AboutUs() {
                             </div>
                             <div className="profile-content" style={{ marginTop: "140px" }}>
                                 <div style={{ "color": "white" }} className="profile-name">Ronak Vadhaiya</div>
-                                <div style={{ "color": "white" }} className="profile-username">@janedoesurname</div>
                                 <div className="profile-icons">
-                                    <a href="#"><i style={{ "fontSize": "25px", "color": "blue", "marginRight": "15px" }}><FaLinkedin /></i></a>
-                                    <a href="#"><i style={{ "fontSize": "25px", "color": "green" }}><FaGithub /></i></a>
+                                    <a href="https://www.linkedin.com/in/ronakvadhaiya/" target="_blank"><i style={{ "fontSize": "25px", "color": "blue", "marginRight": "15px" }}><FaLinkedin /></i></a>
+                                    <a href="https://github.com/Rac-Ro007" target="_blank"><i style={{ "fontSize": "25px", "color": "green" }}><FaGithub /></i></a>
                                 </div>
                             </div>
                         </div>
@@ -45,10 +43,9 @@ export default function AboutUs() {
                             </div>
                             <div className="profile-content" style={{ marginTop: "140px" }}>
                                 <div style={{ "color": "white" }} className="profile-name">Sameer Ahire</div>
-                                <div style={{ "color": "white" }} className="profile-username">Desc</div>
                                 <div className="profile-icons">
-                                    <a href="#"><i style={{ "fontSize": "25px", "color": "blue", "marginRight": "15px" }}><FaLinkedin /></i></a>
-                                    <a href="#"><i style={{ "fontSize": "25px", "color": "green" }}><FaGithub /></i></a>
+                                    <a href="https://www.linkedin.com/in/sameer-ahire-31512b174/" target="_blank"><i style={{ "fontSize": "25px", "color": "blue", "marginRight": "15px" }}><FaLinkedin /></i></a>
+                                    <a href="https://github.com/sameer6399" target="_blank"><i style={{ "fontSize": "25px", "color": "green" }}><FaGithub /></i></a>
                                 </div>
                             </div>
                         </div>
