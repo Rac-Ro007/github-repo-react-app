@@ -20,7 +20,7 @@
     margin: 10px auto;
     cursor: pointer;
     max-width: 300px;
-    z-index: -2;
+    z-index: 5;
     transition: all 0.3s ease; /* Smooth transition */
 }
 

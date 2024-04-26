@@ -35,7 +35,7 @@ function Repoc() {
 
   return (
     <Provider store={store}>
-    <div>
+    <div className= {isLandingPage ? "landing-page" : "" } style={{height:"1000px"}}>
       {/* <div className="d-none d-md-block"> */}
       {/* </div> */}
       <div style={{ flexGrow: 1 }}>
@@ -44,13 +44,13 @@ function Repoc() {
           <hr style={{"margin":"0", "color":"#2EA44F", "height":"2px"}}/>
         </div>
         
-        <div className= {isLandingPage ? "landing-page" : "" } 
-        style={{"justifyContent":"center", "display":"flex", paddingTop:"50px"}}>
+        <div style={{"justifyContent":"center", "display":"flex", paddingTop:"50px"}}>
           <Routes>
             <Route path="/" element={<Navigate to="Home" />} />
             <Route path="/Dashboard" element={<Dashboard />} />
             <Route path="/Repositories" element={<RepoCards />} />
             <Route path="/Search/:userId" element={<Search />} />
+            <Route path="/Search/" element={<Search />} />
             <Route path="/Users/*" element={<Users />} />
             <Route path="/Home" element={<Home />} />
             <Route path="/AboutUs" element={<AboutUs />} />

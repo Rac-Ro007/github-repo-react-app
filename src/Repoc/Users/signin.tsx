@@ -3,6 +3,7 @@ import './index.css';
 import { useNavigate } from 'react-router-dom';
 import { User } from './client';
 import * as client from "./client";
+import Swal from 'sweetalert2';
 
 export default function Signin() {
     const [credentials, setCredentials] = useState<User>({
@@ -21,8 +22,19 @@ export default function Signin() {
 
     const signin = async () => {
         try {
-            await client.signin(credentials);
-            navigate("/Search");
+            const user_details = await client.signin(credentials);
+            Swal.fire({
+                title: "Good job!",
+                text: "Collection Added Successfully!!",
+                confirmButtonText: "Dive In",
+                icon: "success"
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    navigate(`/Search/${user_details._id}`);
+                }
+              });
+            
         } catch (error) {
             setErrorMessage("Check your Username/Password.");
         }

@@ -1,4 +1,4 @@
-import { Link, Route, Routes, useLocation } from "react-router-dom";
+import { Link, Route, Routes, useLocation, useParams } from "react-router-dom";
 import {
   FaTachometerAlt,
   FaRegUserCircle,
@@ -16,6 +16,15 @@ function GithubNavigation() {
     { label: "SignUp", icon: <FaTachometerAlt className="fs-2" /> },
   ];
   const { pathname } = useLocation();
+  const location = useLocation();
+  const {userId} = useParams();
+  console.log(userId)
+  // Function to determine if the pathname matches the specified formats
+  const isProfilePage = /^\/Profile\//.test(location.pathname);
+  const isCollectionDetailsPage = /^\/CollectionDetails\//.test(location.pathname);
+  const isSearchPage = /^\/Search\//.test(location.pathname);
+
+  const isLandingPage = pathname === "/Home" || location.pathname === "/AboutUs" || location.pathname.startsWith("/Users");
   return (
     <div className="d-flex">
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -47,12 +56,31 @@ function GithubNavigation() {
               <li className="nav-item">
                 <Link to='/AboutUs' className="nav-link" >About Us</Link>
               </li>
-              <li className="nav-item">
+              {isProfilePage || isCollectionDetailsPage || isSearchPage ? (
+                <>
+                  <li className="nav-item">
+                    <Link to={`/Profile/${userId}`} className="nav-link">Profile</Link>
+                  </li>
+                  <li className="nav-item">
+                    <button className="nav-link" >Sign Out</button>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li className="nav-item">
+                    <Link to='/Users/Signup' className="nav-link">Sign Up</Link>
+                  </li>
+                  <li className="nav-item">
+                    <Link to='/Users/Signin' className="nav-link">Sign In</Link>
+                  </li>
+                </>
+              )}
+              {/* <li className="nav-item">
                 <Link to='/Users/Signup' className="nav-link">Sign Up</Link>
               </li>
               <li className="nav-item">
                 <Link to='/Users/Signin' className="nav-link">Sign In</Link>
-              </li>
+              </li> */}
             </ul>
           </div>
 
