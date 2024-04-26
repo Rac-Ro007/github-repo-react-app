@@ -16,6 +16,7 @@ import AboutUs from "./AboutUs";
 import Profile from "./Users/profile";
 import CollectionDetails from "./CollectionDetails";
 import store from "../store";
+import Admin from "./Admin";
 // import Users from "./Users"
 
 function Repoc() {
@@ -54,6 +55,7 @@ function Repoc() {
             <Route path="/Users/*" element={<Users />} />
             <Route path="/Home" element={<Home />} />
             <Route path="/AboutUs" element={<AboutUs />} />
+            <Route path="/Admin" element={<Admin />} />
             <Route path="/Profile/:userId" element={<Profile />} />
             <Route path="/:userId/CollectionDetails/:collectionId" element={<CollectionDetails />} />
             {/* <Route path="/Courses/:cid/*" element={<Courses courses={_courses} />} /> */}

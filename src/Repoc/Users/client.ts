@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:4000";
+const API_BASE = process.env.REACT_APP_API_BASE || "https://cs5610-project.onrender.com";
 const COLLECTIONS_API = `${API_BASE}/repoc/api/collections`;
 
 export const fetchCollectionsForUser = async (userId?: string) => {
@@ -37,7 +37,7 @@ export interface User {
 };
 
 export const signin = async (credentials: User) => { 
-    const response = await axios.post(`${API_BASE}/repoc/api/users/login`, credentials);
+    const response = await axios.post(API_BASE + `/repoc/api/users/login`, credentials);
     return response.data;
 };
 
