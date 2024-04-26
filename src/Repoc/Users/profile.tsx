@@ -18,6 +18,7 @@ const Profile = () => {
     const [userName, setUserName] = useState('');
     const [password, setPassword] = useState('');
     // Add more state variables as needed
+    const [userDetails, setUserDetails] = useState({} as any);
 
     // State variable to manage the active tab
     const [activeTab, setActiveTab] = useState('Collections');
@@ -39,6 +40,13 @@ const Profile = () => {
         dispatch(setCollectionsOwned(collections.collectionsOwned))
         dispatch(setCollectionsStarred(collections.collectionsStarred))
         dispatch(setCollectionsSavedBy(collections.collectionsSavedBy))
+        // setModuleList(modules)
+    }
+
+    const fetchUserDetails = async(uid?:string) => {
+        const user_data = await client.fetchUserDetails(uid);
+        // console.log("fetched Collections", user_data)
+        setUserDetails(user_data);
         // setModuleList(modules)
     }
 
@@ -69,8 +77,8 @@ const Profile = () => {
         });
     }
 
-    const handleUpdateCollection = async () => {
-        const status = await client.updateCollection(collection);
+    const handleUserUpdate = async () => {
+        const status = await client.updateUserDetails(collection);
         dispatch(updateCollection(collection));
     };
 
@@ -83,6 +91,7 @@ const Profile = () => {
 
     useEffect(() => {
         fetchUserCollections(userId);
+        fetchUserDetails(userId);
     }, [])
 
     const clearCollection = () => dispatch(setCollection([]))
@@ -103,14 +112,22 @@ const Profile = () => {
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3">
                             <label htmlFor="userName" className="form-label">User Name</label>
-                            <input type="text" className="form-control" id="userName" value={userName} onChange={(e) => setUserName(e.target.value)} />
+                            <input type="text" className="form-control" id="userName" value={userDetails.username} onChange={(e) => setUserDetails({ ...userDetails, username:e.target.value})} />
                         </div>
                         <div className="mb-3">
                             <label htmlFor="password" className="form-label">Password</label>
-                            <input type="password" className="form-control" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                            <input type="password" className="form-control" id="password" value={userDetails.password} onChange={(e) => setUserDetails({ ...userDetails, password:e.target.value})} />
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="name" className="form-label">Name</label>
+                            <input type="text" className="form-control" id="name" value={userDetails.name} onChange={(e) => setUserDetails({ ...userDetails, name:e.target.value})} />
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="email" className="form-label">Email</label>
+                            <input type="email" className="form-control" id="email" value={userDetails.email} onChange={(e) => setUserDetails({ ...userDetails, email:e.target.value})} />
                         </div>
                         {/* Add more input fields for other profile information */}
-                        <button type="submit" className="btn btn-primary">Update</button>
+                        <button type="submit" className="btn btn-outline-dark">Update Details</button>
                     </form>
                 </div>
                 {/* Right column for tabs */}
