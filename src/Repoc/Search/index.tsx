@@ -73,6 +73,7 @@ function Search() {
       <div className="d-flex justify-content-between">
         <h3 className="pt-2">Search what you are Looking For</h3>
         <Link to={`/Profile/${userId}`} className="btn btn-dark">Profile</Link>
+        <Link to={`/Admin`} className="btn btn-dark">Admin Profile</Link>
       </div>
       {/* Search Section */}
       <div className="mb-4 p-4 pb-3">

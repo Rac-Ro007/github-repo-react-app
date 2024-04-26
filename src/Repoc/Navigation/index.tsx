@@ -13,9 +13,10 @@ interface NavbarDropdownProps {
   isSearchPage: boolean;
 }
 
+
 function NavbarDropdown({ isOpen, isProfilePage, isCollectionDetailsPage, isSearchPage }: NavbarDropdownProps) {
   return (
-    <div className={`collapse navbar-collapse ${isOpen ? 'show' : ''}`} id="navbarNav">
+    <div className={`collapse navbar-collapse justify-content-end ${isOpen ? 'show' : ''}`} id="navbarNav">
       <ul className="navbar-nav ml-auto">
         <li className="nav-item">
           <Link to='/AboutUs' className="nav-link" >About Us</Link>
@@ -76,34 +77,10 @@ function GithubNavigation() {
             </div>
           </Link>
 
-          <button className="navbar-toggler" type="button" onClick={toggleDropdown} aria-controls="navbarNav" aria-expanded={isOpen ? "true" : "false"} aria-label="Toggle navigation">
+          <button className="navbar-toggler justify-content-end" type="button" onClick={toggleDropdown} aria-controls="navbarNav" aria-expanded={isOpen ? "true" : "false"} aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
           <NavbarDropdown isOpen={isOpen} isProfilePage={isProfilePage} isCollectionDetailsPage={isCollectionDetailsPage} isSearchPage={isSearchPage} />
-
-          <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
-            <ul className="navbar-nav">
-              <li className="nav-item">
-                <Link to='/AboutUs' className="nav-link" >About Us</Link>
-              </li>
-              {isProfilePage || isCollectionDetailsPage || isSearchPage ? (
-                <>
-                  <li className="nav-item">
-                    <Link to='/Users/Signin' className="nav-link" >Sign Out</Link>
-                  </li>
-                </>
-              ) : (
-                <>
-                  <li className="nav-item">
-                    <Link to='/Users/Signup' className="nav-link">Sign Up</Link>
-                  </li>
-                  <li className="nav-item">
-                    <Link to='/Users/Signin' className="nav-link">Sign In</Link>
-                  </li>
-                </>
-              )}
-            </ul>
-          </div>
 
         </div>
       </nav>
